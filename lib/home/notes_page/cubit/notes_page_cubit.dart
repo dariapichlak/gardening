@@ -11,6 +11,7 @@ class NotesPageCubit extends Cubit<NotesPageState> {
           documents: [],
           isLoading: false,
           errorMessage: '',
+          value: false,
         ));
 
   StreamSubscription? _streamSubscription;
@@ -21,6 +22,7 @@ class NotesPageCubit extends Cubit<NotesPageState> {
         documents: [],
         errorMessage: '',
         isLoading: true,
+        value: false,
       ),
     );
 
@@ -33,6 +35,7 @@ class NotesPageCubit extends Cubit<NotesPageState> {
           documents: data.docs,
           errorMessage: '',
           isLoading: false,
+          value: false,
         ),
       );
     })
@@ -43,6 +46,7 @@ class NotesPageCubit extends Cubit<NotesPageState> {
               documents: const [],
               errorMessage: error.toString(),
               isLoading: false,
+              value: false,
             ),
           );
         },
@@ -61,6 +65,7 @@ class NotesPageCubit extends Cubit<NotesPageState> {
           errorMessage: error.toString(),
           isLoading: false,
           documents: const [],
+          value: false,
         ),
       );
       start();

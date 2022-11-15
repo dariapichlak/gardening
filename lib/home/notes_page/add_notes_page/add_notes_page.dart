@@ -11,8 +11,6 @@ class AddNotesPage extends StatefulWidget {
 }
 
 var titleNote = '';
-var descriptionNote = '';
-
 
 class _AddNotesPageState extends State<AddNotesPage> {
   @override
@@ -33,14 +31,6 @@ class _AddNotesPageState extends State<AddNotesPage> {
                 });
               }),
             ),
-            TextField(
-              decoration: const InputDecoration(hintText: 'Description'),
-              onChanged: ((newValue) {
-                setState(() {
-                  descriptionNote = newValue;
-                });
-              }),
-            ),
           ],
         ),
       ),
@@ -49,8 +39,8 @@ class _AddNotesPageState extends State<AddNotesPage> {
         label: const Text('Save'),
         onPressed: () {
           FirebaseFirestore.instance.collection('notes').add({
-            'descriptionNote': descriptionNote,
             'titleNote': titleNote,
+            'value': false,
           });
         },
       ),
