@@ -36,73 +36,75 @@ class _NotesPageContentState extends State<NotesPageContent> {
                 ),
               );
             }
-            final documents = state.documents;
-
-            return Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ListView(
-                children: [
-                  for (final document in documents) ...[
-                    Dismissible(
-                      background: const DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 325.0),
-                          child: Icon(Icons.delete),
-                        ),
-                      ),
-                      key: ValueKey(document.id),
-                      confirmDismiss: (direction) async {
-                        return direction == DismissDirection.endToStart;
-                      },
-                      onDismissed: (_) {
-                        FirebaseFirestore.instance
-                            .collection('notes')
-                            .doc(document.id)
-                            .delete();
-                      },
-                      child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                          width: 350,
-                          padding: const EdgeInsets.all(8),
-                          margin: const EdgeInsets.all(8),
+            if (state.documents.isNotEmpty) {
+              final documents = state.documents;
+              return Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ListView(
+                  children: [
+                    for (final document in documents) ...[
+                      Dismissible(
+                        background: const DecoratedBox(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.lightBlue,
+                            color: Colors.white,
                           ),
-                          child: Builder(builder: (context) {
-                            return Theme(
-                              data: Theme.of(context).copyWith(
-                                unselectedWidgetColor: Colors.white,
-                              ),
-                              child: CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                title: Text(
-                                  document['titleNote'],
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 325.0),
+                            child: Icon(Icons.delete),
+                          ),
+                        ),
+                        key: ValueKey(document.id),
+                        confirmDismiss: (direction) async {
+                          return direction == DismissDirection.endToStart;
+                        },
+                        onDismissed: (_) {
+                          FirebaseFirestore.instance
+                              .collection('notes')
+                              .doc(document.id)
+                              .delete();
+                        },
+                        child: InkWell(
+                          onTap: () {},
+                          child: Container(
+                            width: 350,
+                            padding: const EdgeInsets.all(8),
+                            margin: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.lightBlue,
+                            ),
+                            child: Builder(builder: (context) {
+                              return Theme(
+                                data: Theme.of(context).copyWith(
+                                  unselectedWidgetColor: Colors.white,
                                 ),
-                                value: document['value'],
-                                onChanged: (bool? value) {
-                                  FirebaseFirestore.instance
-                                      .collection('notes')
-                                      .doc(document.id)
-                                      .update(
-                                    {'value': value!},
-                                  );
-                                },
-                              ),
-                            );
-                          }),
+                                child: CheckboxListTile(
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  title: Text(
+                                    document['titleNote'],
+                                  ),
+                                  value: document['value'],
+                                  onChanged: (bool? value) {
+                                    FirebaseFirestore.instance
+                                        .collection('notes')
+                                        .doc(document.id)
+                                        .update(
+                                      {'value': value!},
+                                    );
+                                  },
+                                ),
+                              );
+                            }),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ],
-                ],
-              ),
-            );
+                ),
+              );
+            }
+            return const Center(child: Text('List is Empty'));
           },
         ),
       ),
