@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-part 'notes_page_state.dart';
+part 'notes_page_content_state.dart';
 
-class NotesPageCubit extends Cubit<NotesPageState> {
-  NotesPageCubit()
-      : super(const NotesPageState(
+class NotesPageContentCubit extends Cubit<NotesPageContentState> {
+  NotesPageContentCubit()
+      : super(const NotesPageContentState(
           documents: [],
           isLoading: false,
           errorMessage: '',
@@ -18,7 +18,7 @@ class NotesPageCubit extends Cubit<NotesPageState> {
 
   Future<void> start() async {
     emit(
-      const NotesPageState(
+      const NotesPageContentState(
         documents: [],
         errorMessage: '',
         isLoading: true,
@@ -31,7 +31,7 @@ class NotesPageCubit extends Cubit<NotesPageState> {
         .snapshots()
         .listen((data) {
       emit(
-        NotesPageState(
+        NotesPageContentState(
           documents: data.docs,
           errorMessage: '',
           isLoading: false,
@@ -42,7 +42,7 @@ class NotesPageCubit extends Cubit<NotesPageState> {
       ..onError(
         (error) {
           emit(
-            NotesPageState(
+            NotesPageContentState(
               documents: const [],
               errorMessage: error.toString(),
               isLoading: false,
@@ -61,7 +61,7 @@ class NotesPageCubit extends Cubit<NotesPageState> {
           .delete();
     } catch (error) {
       emit(
-        NotesPageState(
+        NotesPageContentState(
           errorMessage: error.toString(),
           isLoading: false,
           documents: const [],
@@ -83,7 +83,7 @@ class NotesPageCubit extends Cubit<NotesPageState> {
       });
     } catch (error) {
       emit(
-        NotesPageState(
+        NotesPageContentState(
           value: false,
           documents: const [],
           isLoading: false,

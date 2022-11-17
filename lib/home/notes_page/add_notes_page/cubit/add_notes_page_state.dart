@@ -1,11 +1,11 @@
 part of 'add_notes_page_cubit.dart';
 
 @immutable
-class AddNotesPageState {
+class AddNotesPageContentState {
   final bool save;
   final String errorMessage;
 
-  const AddNotesPageState({
+  const AddNotesPageContentState({
     this.save = false,
     this.errorMessage = '',
   });

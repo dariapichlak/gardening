@@ -9,17 +9,17 @@ class AddNotesPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AddNotesPage> createState() => _AddNotesPageState();
+  State<AddNotesPage> createState() => _AddNotesPageContentState();
 }
 
 var titleNote = '';
 
-class _AddNotesPageState extends State<AddNotesPage> {
+class _AddNotesPageContentState extends State<AddNotesPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddNotesPageCubit(),
-      child: BlocListener<AddNotesPageCubit, AddNotesPageState>(
+      create: (context) => AddNotesPageContentCubit(),
+      child: BlocListener<AddNotesPageContentCubit, AddNotesPageContentState>(
         listener: (context, state) {
           if (state.save) {
             Navigator.of(context).pop();
@@ -33,7 +33,7 @@ class _AddNotesPageState extends State<AddNotesPage> {
             );
           }
         },
-        child: BlocBuilder<AddNotesPageCubit, AddNotesPageState>(
+        child: BlocBuilder<AddNotesPageContentCubit, AddNotesPageContentState>(
           builder: (context, state) {
             return Scaffold(
               appBar: AppBar(
@@ -61,7 +61,7 @@ class _AddNotesPageState extends State<AddNotesPage> {
                 icon: const Icon(Icons.save),
                 label: const Text('Save'),
                 onPressed: () {
-                  context.read<AddNotesPageCubit>().add(
+                  context.read<AddNotesPageContentCubit>().add(
                         titleNote,
                       );
                 },

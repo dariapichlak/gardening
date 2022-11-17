@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/notes_page/add_notes_page/add_notes_page.dart';
-import 'package:gardening/home/notes_page/cubit/notes_page_cubit.dart';
+import 'package:gardening/home/notes_page/cubit/notes_page_content_cubit.dart';
 
 class NotesPageContent extends StatefulWidget {
   const NotesPageContent({
@@ -20,8 +18,8 @@ class _NotesPageContentState extends State<NotesPageContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => NotesPageCubit()..start(),
-        child: BlocBuilder<NotesPageCubit, NotesPageState>(
+        create: (context) => NotesPageContentCubit()..start(),
+        child: BlocBuilder<NotesPageContentCubit, NotesPageContentState>(
           builder: (context, state) {
             if (state.errorMessage.isNotEmpty) {
               return const Center(child: Text('Error'));
@@ -55,7 +53,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
                           return direction == DismissDirection.endToStart;
                         },
                         onDismissed: (_) {
-                          context.read<NotesPageCubit>().remove(
+                          context.read<NotesPageContentCubit>().remove(
                                 documentID: document.id,
                               );
                         },
@@ -80,7 +78,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
                                 ),
                                 value: document['value'],
                                 onChanged: (bool? value) {
-                                  context.read<NotesPageCubit>().checked(
+                                  context.read<NotesPageContentCubit>().checked(
                                         value: value,
                                         documentID: document.id,
                                       );

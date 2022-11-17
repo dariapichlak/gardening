@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 part 'add_notes_page_state.dart';
 
-class AddNotesPageCubit extends Cubit<AddNotesPageState> {
-  AddNotesPageCubit() : super(const AddNotesPageState());
+class AddNotesPageContentCubit extends Cubit<AddNotesPageContentState> {
+  AddNotesPageContentCubit() : super(const AddNotesPageContentState());
 
   Future<void> add(String titleNote) async {
     try {
@@ -14,9 +14,9 @@ class AddNotesPageCubit extends Cubit<AddNotesPageState> {
         'titleNote': titleNote,
         'value': false,
       });
-      emit(const AddNotesPageState(save: true));
+      emit(const AddNotesPageContentState(save: true));
     } catch (error) {
-      emit(AddNotesPageState(errorMessage: error.toString()));
+      emit(AddNotesPageContentState(errorMessage: error.toString()));
     }
   }
 }
