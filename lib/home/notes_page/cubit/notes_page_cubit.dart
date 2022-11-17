@@ -72,6 +72,28 @@ class NotesPageCubit extends Cubit<NotesPageState> {
     }
   }
 
+  Future<void> checked(
+      {required String documentID, required bool? value}) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('notes')
+          .doc(documentID)
+          .update({
+        'value': value,
+      });
+    } catch (error) {
+      emit(
+        NotesPageState(
+          value: false,
+          documents: const [],
+          isLoading: false,
+          errorMessage: error.toString(),
+        ),
+      );
+      start();
+    }
+  }
+
   @override
   Future<void> close() {
     _streamSubscription?.cancel();

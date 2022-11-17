@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gardening/home/calendar_page/calendar_page_content.dart';
 import 'package:gardening/home/notes_page/notes_page_content.dart';
@@ -11,45 +12,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var currentIndex = 1;
-
+  var index = 1;
+  final items = const <Widget>[
+    Icon(Icons.calendar_month, size: 30),
+    Icon(Icons.note_add, size: 30),
+    Icon(Icons.note, size: 30),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Builder(builder: (context) {
-        if (currentIndex == 0) {
+        if (index == 0) {
           return const Center(
             child: CalendarPageContent(),
           );
         }
-        if (currentIndex == 2) {
+        if (index == 2) {
           return const Center(
             child: NotesPageContent(),
           );
         }
         return const PlantsPageContent();
       }),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (newIndex) {
-          setState(() {
-            currentIndex = newIndex;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month),
-            label: 'Calendar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.note_add),
-            label: 'Plants',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notes),
-            label: 'Notes',
-          ),
-        ],
+      bottomNavigationBar: Theme(
+        data: Theme.of(context)
+            .copyWith(iconTheme: const IconThemeData(color: Colors.white)),
+        child: CurvedNavigationBar(
+            color: Colors.black,
+            backgroundColor: Colors.transparent,
+            buttonBackgroundColor: Colors.black,
+            animationCurve: Curves.easeInOut,
+            animationDuration: const Duration(milliseconds: 350),
+            height: 70,
+            index: index,
+            onTap: (index) {
+              setState(() {
+                this.index = index;
+              });
+            },
+            items: items),
       ),
     );
   }

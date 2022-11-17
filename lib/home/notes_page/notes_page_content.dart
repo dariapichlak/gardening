@@ -1,10 +1,7 @@
 import 'dart:math';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gardening/app_style/app_style.dart';
 import 'package:gardening/home/notes_page/add_notes_page/add_notes_page.dart';
 import 'package:gardening/home/notes_page/cubit/notes_page_cubit.dart';
 
@@ -58,45 +55,39 @@ class _NotesPageContentState extends State<NotesPageContent> {
                           return direction == DismissDirection.endToStart;
                         },
                         onDismissed: (_) {
-                          FirebaseFirestore.instance
-                              .collection('notes')
-                              .doc(document.id)
-                              .delete();
-                        },
-                        child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                            width: 350,
-                            padding: const EdgeInsets.all(8),
-                            margin: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.lightBlue,
-                            ),
-                            child: Builder(builder: (context) {
-                              return Theme(
-                                data: Theme.of(context).copyWith(
-                                  unselectedWidgetColor: Colors.white,
-                                ),
-                                child: CheckboxListTile(
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  title: Text(
-                                    document['titleNote'],
-                                  ),
-                                  value: document['value'],
-                                  onChanged: (bool? value) {
-                                    FirebaseFirestore.instance
-                                        .collection('notes')
-                                        .doc(document.id)
-                                        .update(
-                                      {'value': value!},
-                                    );
-                                  },
-                                ),
+                          context.read<NotesPageCubit>().remove(
+                                documentID: document.id,
                               );
-                            }),
+                        },
+                        child: Container(
+                          width: 350,
+                          padding: const EdgeInsets.all(8),
+                          margin: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.lightBlue,
                           ),
+                          child: Builder(builder: (context) {
+                            return Theme(
+                              data: Theme.of(context).copyWith(
+                                unselectedWidgetColor: Colors.white,
+                              ),
+                              child: CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text(
+                                  document['titleNote'],
+                                ),
+                                value: document['value'],
+                                onChanged: (bool? value) {
+                                  context.read<NotesPageCubit>().checked(
+                                        value: value,
+                                        documentID: document.id,
+                                      );
+                                },
+                              ),
+                            );
+                          }),
                         ),
                       ),
                     ],

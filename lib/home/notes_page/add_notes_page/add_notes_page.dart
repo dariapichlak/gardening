@@ -44,7 +44,10 @@ class _AddNotesPageState extends State<AddNotesPage> {
                 child: ListView(
                   children: [
                     TextField(
-                      decoration: const InputDecoration(hintText: 'Title'),
+                      maxLines: null,
+                      decoration: const InputDecoration.collapsed(
+                        hintText: 'Title',
+                      ),
                       onChanged: ((newValue) {
                         setState(() {
                           titleNote = newValue;
