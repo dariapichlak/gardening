@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gardening/home/plants_page_content/add_plant_page/add_plant_page.dart';
 import 'package:gardening/home/plants_page_content/cubit/plants_page_content_cubit.dart';
 import 'package:gardening/home/plants_page_content/plant_card/plant_card.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PlantsPageContent extends StatelessWidget {
   const PlantsPageContent({
@@ -11,6 +13,34 @@ class PlantsPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 254, 254, 254),
+      appBar: AppBar(
+        elevation: 5,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {},
+          ),
+        ),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(35),
+                bottomRight: Radius.circular(35))),
+        backgroundColor: const Color.fromARGB(255, 86, 133, 94),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const AddPlantPage()));
+              },
+            ),
+          ),
+        ],
+      ),
       body: BlocProvider(
         create: (context) => PlantsPageContentCubit()..start(),
         child: BlocBuilder<PlantsPageContentCubit, PlantsPageContentState>(
@@ -21,7 +51,7 @@ class PlantsPageContent extends StatelessWidget {
             if (state.isLoading) {
               return const Center(
                 child: CircularProgressIndicator(
-                  color: Colors.green,
+                  color: Color.fromARGB(255, 86, 133, 94),
                 ),
               );
             }
@@ -66,7 +96,7 @@ class PlantsPageContent extends StatelessWidget {
                               margin: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Colors.lightBlue,
+                                color: const Color.fromARGB(255, 86, 133, 94),
                               ),
                               child: Row(
                                 children: const [
@@ -85,7 +115,11 @@ class PlantsPageContent extends StatelessWidget {
                 ),
               );
             }
-            return const Center(child: Text('List is Empty'));
+            return Center(
+              child: Text('Add Plants',
+                  style: GoogleFonts.dancingScript(
+                      fontSize: 35, color: Colors.black)),
+            );
           },
         ),
       ),

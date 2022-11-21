@@ -9,8 +9,29 @@ class CalendarPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 254, 254, 254),
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {},
+          ),
+        ),
+        
+        elevation: 5,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(35),
+                bottomRight: Radius.circular(35))),
+        backgroundColor: const Color.fromARGB(255, 86, 133, 94),
+      ),
       body: Column(
         children: [
+          const SizedBox(
+            height: 50,
+          ),
+          const Text('Weather'),
           const SizedBox(
             height: 50,
           ),

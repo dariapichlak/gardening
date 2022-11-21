@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/notes_page/add_notes_page/add_notes_page.dart';
 import 'package:gardening/home/notes_page/cubit/notes_page_content_cubit.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NotesPageContent extends StatefulWidget {
   const NotesPageContent({
@@ -17,6 +18,34 @@ class _NotesPageContentState extends State<NotesPageContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 254, 254, 254),
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {},
+          ),
+        ),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(35),
+                bottomRight: Radius.circular(35))),
+        elevation: 5,
+        backgroundColor: const Color.fromARGB(255, 86, 133, 94),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: IconButton(
+              icon: const Icon(Icons.notes),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const AddNotesPage()));
+              },
+            ),
+          ),
+        ],
+      ),
       body: BlocProvider(
         create: (context) => NotesPageContentCubit()..start(),
         child: BlocBuilder<NotesPageContentCubit, NotesPageContentState>(
@@ -27,7 +56,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
             if (state.isLoading) {
               return const Center(
                 child: CircularProgressIndicator(
-                  color: Colors.green,
+                  color: Color.fromARGB(255, 86, 133, 94),
                 ),
               );
             }
@@ -41,7 +70,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
                       Dismissible(
                         background: const DecoratedBox(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Color.fromARGB(255, 254, 254, 254),
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(left: 325.0),
@@ -59,22 +88,28 @@ class _NotesPageContentState extends State<NotesPageContent> {
                         },
                         child: Container(
                           width: 350,
-                          padding: const EdgeInsets.all(8),
-                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(3),
+                          margin: const EdgeInsets.all(3),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.lightBlue,
+                            color: const Color.fromARGB(255, 254, 254, 254),
                           ),
                           child: Builder(builder: (context) {
                             return Theme(
                               data: Theme.of(context).copyWith(
-                                unselectedWidgetColor: Colors.white,
+                                unselectedWidgetColor: Colors.black,
                               ),
                               child: CheckboxListTile(
+                                activeColor:
+                                    const Color.fromARGB(255, 255, 191, 0),
                                 controlAffinity:
                                     ListTileControlAffinity.leading,
                                 title: Text(
                                   document['titleNote'],
+                                  style: GoogleFonts.roboto(
+                                    textStyle: const TextStyle(fontSize: 15),
+                                    color: Colors.black,
+                                  ),
                                 ),
                                 value: document['value'],
                                 onChanged: (bool? value) {
@@ -88,22 +123,25 @@ class _NotesPageContentState extends State<NotesPageContent> {
                           }),
                         ),
                       ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 1,
+                        ),
+                      ),
                     ],
                   ],
                 ),
               );
             }
-            return const Center(child: Text('List is Empty'));
+            return Center(
+              child: Text('Add Notes',
+                  style: GoogleFonts.dancingScript(
+                      fontSize: 40, color: Colors.black)),
+            );
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.create),
-        label: const Text('Add Note'),
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => const AddNotesPage()));
-        },
       ),
     );
   }

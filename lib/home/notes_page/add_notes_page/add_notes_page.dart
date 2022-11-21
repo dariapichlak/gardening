@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/notes_page/add_notes_page/cubit/add_notes_page_cubit.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddNotesPage extends StatefulWidget {
   const AddNotesPage({
@@ -36,8 +36,29 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
         child: BlocBuilder<AddNotesPageContentCubit, AddNotesPageContentState>(
           builder: (context, state) {
             return Scaffold(
+              backgroundColor: const Color.fromARGB(255, 254, 254, 254),
               appBar: AppBar(
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: IconButton(
+                        onPressed: titleNote.isEmpty
+                            ? null
+                            : () {
+                                context.read<AddNotesPageContentCubit>().add(
+                                      titleNote,
+                                    );
+                              },
+                        icon: const Icon(Icons.save)),
+                  )
+                ],
                 title: const Text(''),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(35),
+                        bottomRight: Radius.circular(35))),
+                elevation: 5,
+                backgroundColor: const Color.fromARGB(255, 86, 133, 94),
               ),
               body: Padding(
                 padding: const EdgeInsets.all(40.0),
@@ -46,8 +67,10 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
                     TextField(
                       maxLines: null,
                       decoration: const InputDecoration.collapsed(
-                        hintText: 'Title',
-                      ),
+                          hintText: 'Notes...',
+                          hintStyle: TextStyle(
+                            fontSize: 16,
+                          )),
                       onChanged: ((newValue) {
                         setState(() {
                           titleNote = newValue;
@@ -57,15 +80,6 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
                   ],
                 ),
               ),
-              floatingActionButton: FloatingActionButton.extended(
-                icon: const Icon(Icons.save),
-                label: const Text('Save'),
-                onPressed: () {
-                  context.read<AddNotesPageContentCubit>().add(
-                        titleNote,
-                      );
-                },
-              ),
             );
           },
         ),
@@ -73,3 +87,12 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
     );
   }
 }
+
+
+//  onPressed: titleNote.isEmpty
+//                     ? null
+//                     : () {
+//                         context.read<AddNotesPageContentCubit>().add(
+//                               titleNote,
+//                             );
+//                       },
