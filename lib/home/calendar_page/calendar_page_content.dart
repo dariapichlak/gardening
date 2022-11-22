@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gardening/home/settings_page/settings_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPageContent extends StatelessWidget {
@@ -15,10 +16,15 @@ class CalendarPageContent extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const SettingsPage(),
+                ),
+              );
+            },
           ),
         ),
-        
         elevation: 5,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(

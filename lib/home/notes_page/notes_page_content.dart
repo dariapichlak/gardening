@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/notes_page/add_notes_page/add_notes_page.dart';
 import 'package:gardening/home/notes_page/cubit/notes_page_content_cubit.dart';
+import 'package:gardening/home/settings_page/settings_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NotesPageContent extends StatefulWidget {
@@ -24,7 +25,13 @@ class _NotesPageContentState extends State<NotesPageContent> {
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const SettingsPage(),
+                ),
+              );
+            },
           ),
         ),
         shape: const RoundedRectangleBorder(

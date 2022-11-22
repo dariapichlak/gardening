@@ -47,10 +47,10 @@ class AddPlantPage extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 30,
+            height: 10,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50.0),
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: TextField(
               textAlign: TextAlign.center,
               decoration: InputDecoration(
@@ -74,12 +74,19 @@ class AddPlantPage extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(35))),
               height: 50,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 80.0),
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Icon(Icons.water),
-                    Text('Watering'),
+                  children: [
+                    const Icon(Icons.water_drop_outlined),
+                    Text(
+                      'Watering',
+                      style: GoogleFonts.roboto(fontSize: 15),
+                    ),
+                    Text(
+                      '27/11/2022',
+                      style: GoogleFonts.roboto(fontSize: 15),
+                    ),
                   ],
                 ),
               ),
@@ -88,9 +95,27 @@ class AddPlantPage extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const Center(
-            child: Text(
-              'Diary',
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: ExpansionTile(
+              title: Text(
+                'Diary',
+                style: GoogleFonts.roboto(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 86, 133, 94),
+                ),
+              ),
+              children: [
+                ListTile(
+                  title: Text(
+                    'Day 1 - planting',
+                    style: GoogleFonts.roboto(
+                      fontSize: 14,
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
         ],
