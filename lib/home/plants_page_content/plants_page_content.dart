@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/plants_page_content/add_plant_page/add_plant_page.dart';
 import 'package:gardening/home/plants_page_content/cubit/plants_page_content_cubit.dart';
 import 'package:gardening/home/plants_page_content/plant_card/plant_card.dart';
-import 'package:gardening/home/settings_page/settings_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PlantsPageContent extends StatelessWidget {
@@ -20,14 +19,8 @@ class PlantsPageContent extends StatelessWidget {
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const SettingsPage(),
-                ),
-              );
-            },
+            icon: const Icon(Icons.person),
+            onPressed: () {},
           ),
         ),
         shape: const RoundedRectangleBorder(

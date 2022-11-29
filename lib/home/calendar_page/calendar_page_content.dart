@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:gardening/home/settings_page/settings_page.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class CalendarPageContent extends StatelessWidget {
+class CalendarPageContent extends StatefulWidget {
   const CalendarPageContent({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<CalendarPageContent> createState() => _CalendarPageContentState();
+}
+
+class _CalendarPageContentState extends State<CalendarPageContent> {
+  DateTime today = DateTime.now();
+
+  void _onDaySelected(DateTime day, DateTime focusedDay) {
+    setState(() {
+      today = day;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +28,8 @@ class CalendarPageContent extends StatelessWidget {
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const SettingsPage(),
-                ),
-              );
-            },
+            icon: const Icon(Icons.person),
+            onPressed: () {},
           ),
         ),
         elevation: 5,
@@ -39,18 +46,35 @@ class CalendarPageContent extends StatelessWidget {
           ),
           const Text('Weather'),
           const SizedBox(
-            height: 50,
+            height: 210,
           ),
-          TableCalendar(
-            firstDay: DateTime.utc(2020, 1, 1),
-            lastDay: DateTime.utc(2030, 12, 31),
-            focusedDay: DateTime.now(),
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarFormat: CalendarFormat.month,
-            headerStyle: const HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
+          SfCalendar(
+            view: CalendarView.month,
+            initialSelectedDate: DateTime.now(),
+            cellBorderColor: Colors.transparent,
+            showNavigationArrow: true,
+            headerHeight: 70,
+            headerStyle: const CalendarHeaderStyle(
+              textAlign: TextAlign.center,
+              textStyle: TextStyle(
+                  fontSize: 18,
+                  fontStyle: FontStyle.normal,
+                  letterSpacing: 5,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w300),
             ),
+            todayHighlightColor: const Color.fromARGB(255, 255, 196, 2),
+            selectionDecoration: BoxDecoration(
+              color: Colors.transparent,
+              border: Border.all(
+                color: const Color.fromARGB(255, 255, 196, 2),
+                width: 1.5,
+              ),
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(
+            height: 50,
           ),
         ],
       ),
