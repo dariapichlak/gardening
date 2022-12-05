@@ -34,8 +34,10 @@ class PlantsPageContent extends StatelessWidget {
             child: IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const AddPlantPage()));
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const AddPlantPage(),
+                  fullscreenDialog: true,
+                ));
               },
             ),
           ),
@@ -99,13 +101,42 @@ class PlantsPageContent extends StatelessWidget {
                                 color: const Color.fromARGB(255, 86, 133, 94),
                               ),
                               child: Row(
-                                children: const [
-                                  CircleAvatar(
+                                children: [
+                                  const CircleAvatar(
                                     backgroundImage:
                                         AssetImage('images/plantimage.jpg'),
                                     radius: 100,
                                   ),
-                                  Text('Name Plant'),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(document['plantName'].toString()),
+                                      const SizedBox(
+                                        height: 12,
+                                      ),
+                                      Row(
+                                        children: const [
+                                          Icon(Icons.water_drop_outlined),
+                                          Text(
+                                            '  ',
+                                          ),
+                                          Text(
+                                            '0',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            ' days to watering',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
                                 ],
                               )),
                         ),
