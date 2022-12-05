@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gardening/home/plants_page_content/add_plant_page/cubit/add_plant_page_cubit.dart';
+import 'package:gardening/home/pages/plants_page_content/add_plant_page/cubit/add_plant_page_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddPlantPage extends StatefulWidget {

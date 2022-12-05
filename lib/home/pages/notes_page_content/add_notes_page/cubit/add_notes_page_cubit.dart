@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:gardening/home/notes_page/add_notes_page/add_notes_page.dart';
+import 'package:gardening/home/pages/notes_page_content/add_notes_page/add_notes_page.dart';
 import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

@@ -1,9 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:gardening/home/calendar_page/calendar_page_content.dart';
+import 'package:gardening/home/pages/calendar_page_content/calendar_page_content.dart';
 import 'package:gardening/home/my_drawer/my_drawer.dart';
-import 'package:gardening/home/notes_page/notes_page_content.dart';
-import 'package:gardening/home/plants_page_content/plants_page_content.dart';
+import 'package:gardening/home/pages/notes_page_content/notes_page_content.dart';
+import 'package:gardening/home/pages/plants_page_content/plants_page_content.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

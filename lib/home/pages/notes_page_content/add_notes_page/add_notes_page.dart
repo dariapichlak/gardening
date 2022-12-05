@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gardening/home/notes_page/add_notes_page/cubit/add_notes_page_cubit.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:gardening/home/pages/notes_page_content/add_notes_page/cubit/add_notes_page_cubit.dart';
 
 class AddNotesPage extends StatefulWidget {
   const AddNotesPage({
