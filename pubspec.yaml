@@ -44,6 +44,7 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   google_fonts: ^3.0.1
   syncfusion_flutter_calendar: ^20.3.59
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

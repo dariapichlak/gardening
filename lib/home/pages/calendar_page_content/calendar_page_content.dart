@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarPageContent extends StatefulWidget {
@@ -13,12 +12,6 @@ class CalendarPageContent extends StatefulWidget {
 
 class _CalendarPageContentState extends State<CalendarPageContent> {
   DateTime today = DateTime.now();
-
-  void _onDaySelected(DateTime day, DateTime focusedDay) {
-    setState(() {
-      today = day;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +65,6 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
               ),
               shape: BoxShape.circle,
             ),
-          ),
-          const SizedBox(
-            height: 50,
           ),
         ],
       ),
