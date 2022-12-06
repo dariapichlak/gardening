@@ -28,12 +28,14 @@ class PlantsPageContentCubit extends Cubit<PlantsPageContentState> {
 
     _streamSubscription = FirebaseFirestore.instance
         .collection('plants')
+        .orderBy('releaseDate')
         .snapshots()
         .listen((data) {
       final plantModels = data.docs.map((document) {
         return PlantModel(
           plantName: document['plantName'],
           id: document.id,
+          releaseDate: (document['releaseDate'] as Timestamp).toDate(),
         );
       }).toList();
       emit(

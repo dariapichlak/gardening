@@ -92,53 +92,60 @@ class PlantsPageContent extends StatelessWidget {
                             );
                           },
                           child: Container(
-                              width: 350,
-                              height: 125,
-                              padding: const EdgeInsets.all(8),
-                              margin: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: const Color.fromARGB(255, 86, 133, 94),
-                              ),
-                              child: Row(
-                                children: [
-                                  const CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage('images/plantimage.jpg'),
-                                    radius: 100,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(plantModel.plantName),
-                                      const SizedBox(
-                                        height: 12,
+                            width: 350,
+                            height: 125,
+                            padding: const EdgeInsets.all(8),
+                            margin: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color.fromARGB(255, 86, 133, 94),
+                            ),
+                            child: Row(
+                              children: [
+                                const CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage('images/plantimage.jpg'),
+                                  radius: 100,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(plantModel.plantName),
+                                    const SizedBox(
+                                      height: 12,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(Icons.water_drop_outlined),
+                                        const Text(
+                                          '  ',
+                                        ),
+                                        Text(
+                                          plantModel.daysToWatering(),
+                                          style: const TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const Text(
+                                          ' days to watering',
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      plantModel.releaseDate.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 10,
                                       ),
-                                      Row(
-                                        children: const [
-                                          Icon(Icons.water_drop_outlined),
-                                          Text(
-                                            '  ',
-                                          ),
-                                          Text(
-                                            '0',
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            ' days to watering',
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ],

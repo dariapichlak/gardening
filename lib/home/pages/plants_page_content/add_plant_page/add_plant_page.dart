@@ -186,25 +186,3 @@ class _AddPlantPageBody extends StatelessWidget {
     );
   }
 }
-
-// child: InkWell(
-          //   child: Container(
-          //     decoration: const BoxDecoration(
-          //         color: Color.fromARGB(255, 218, 218, 218),
-          //         borderRadius: BorderRadius.all(Radius.circular(35))),
-          //     height: 50,
-          //     child: Padding(
-          //       padding: const EdgeInsets.symmetric(horizontal: 25.0),
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           const Icon(Icons.water_drop_outlined),
-          //           Text(
-          //             'Watering',
-          //             style: GoogleFonts.roboto(fontSize: 15),
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),

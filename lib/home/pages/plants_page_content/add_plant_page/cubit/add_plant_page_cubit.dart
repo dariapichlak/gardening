@@ -8,12 +8,13 @@ class AddPlantPageCubit extends Cubit<AddPlantPageState> {
   AddPlantPageCubit() : super(const AddPlantPageState());
 
   Future<void> add(
-    String plantName, DateTime releaseDate,
+    String plantName,
+    DateTime releaseDate,
   ) async {
     try {
       await FirebaseFirestore.instance.collection('plants').add({
         'plantName': plantName,
-        'releaseDate' : releaseDate,
+        'releaseDate': releaseDate,
       });
       emit(const AddPlantPageState(save: true));
     } catch (error) {
