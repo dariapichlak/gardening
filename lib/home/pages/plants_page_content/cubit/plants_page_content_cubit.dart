@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:gardening/models/plant_model.dart';
 import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -29,9 +30,15 @@ class PlantsPageContentCubit extends Cubit<PlantsPageContentState> {
         .collection('plants')
         .snapshots()
         .listen((data) {
+      final plantModels = data.docs.map((document) {
+        return PlantModel(
+          plantName: document['plantName'],
+          id: document.id,
+        );
+      }).toList();
       emit(
         PlantsPageContentState(
-          documents: data.docs,
+          documents: plantModels,
           errorMessage: '',
           isLoading: false,
         ),

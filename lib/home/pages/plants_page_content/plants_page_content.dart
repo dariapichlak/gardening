@@ -58,12 +58,12 @@ class PlantsPageContent extends StatelessWidget {
               );
             }
             if (state.documents.isNotEmpty) {
-              final documents = state.documents;
+              final plantModels = state.documents;
               return Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: ListView(
                   children: [
-                    for (final document in documents) ...[
+                    for (final plantModel in plantModels) ...[
                       Dismissible(
                         background: const DecoratedBox(
                           decoration: BoxDecoration(
@@ -74,13 +74,13 @@ class PlantsPageContent extends StatelessWidget {
                             child: Icon(Icons.delete),
                           ),
                         ),
-                        key: ValueKey(document.id),
+                        key: ValueKey(plantModel.id),
                         confirmDismiss: (direction) async {
                           return direction == DismissDirection.endToStart;
                         },
                         onDismissed: (_) {
                           context.read<PlantsPageContentCubit>().remove(
-                                documentID: document.id,
+                                documentID: plantModel.id,
                               );
                         },
                         child: InkWell(
@@ -110,7 +110,7 @@ class PlantsPageContent extends StatelessWidget {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(document['plantName'].toString()),
+                                      Text(plantModel.plantName),
                                       const SizedBox(
                                         height: 12,
                                       ),

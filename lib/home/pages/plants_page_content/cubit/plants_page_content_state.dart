@@ -1,9 +1,8 @@
 part of 'plants_page_content_cubit.dart';
 
-
 @immutable
 class PlantsPageContentState {
-  final List<QueryDocumentSnapshot<Map<String, dynamic>>> documents;
+  final List<PlantModel> documents;
   final bool isLoading;
   final String errorMessage;
 
