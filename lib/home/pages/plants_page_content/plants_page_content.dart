@@ -135,12 +135,12 @@ class PlantsPageContent extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    Text(
-                                      plantModel.releaseDate.toString(),
-                                      style: const TextStyle(
-                                        fontSize: 10,
-                                      ),
-                                    ),
+                                    // Text(
+                                    //   plantModel.releaseDate.toString(),
+                                    //   style: const TextStyle(
+                                    //     fontSize: 10,
+                                    //   ),
+                                    // ),
                                   ],
                                 )
                               ],

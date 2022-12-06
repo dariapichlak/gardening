@@ -10,6 +10,6 @@ class PlantModel {
   final DateTime releaseDate;
 
   String daysToWatering() {
-    return '7';
+    return releaseDate.difference(DateTime.now()).inDays.toString();
   }
 }
