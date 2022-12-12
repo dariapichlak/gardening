@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:bloc/bloc.dart';
+import 'package:gardening/models/note_model.dart';
 import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 part 'notes_page_content_state.dart';
@@ -30,9 +32,13 @@ class NotesPageContentCubit extends Cubit<NotesPageContentState> {
         .collection('notes')
         .snapshots()
         .listen((data) {
+      final noteModels = data.docs.map((document) {
+        return NoteModel(
+            titleNote: document['titleNote'], value: false, id: document.id);
+      }).toList();
       emit(
         NotesPageContentState(
-          documents: data.docs,
+          documents: noteModels,
           errorMessage: '',
           isLoading: false,
           value: false,

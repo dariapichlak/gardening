@@ -61,12 +61,12 @@ class _NotesPageContentState extends State<NotesPageContent> {
               );
             }
             if (state.documents.isNotEmpty) {
-              final documents = state.documents;
+              final noteModels = state.documents;
               return Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: ListView(
                   children: [
-                    for (final document in documents) ...[
+                    for (final noteModel in noteModels) ...[
                       Dismissible(
                         background: const DecoratedBox(
                           decoration: BoxDecoration(
@@ -77,13 +77,13 @@ class _NotesPageContentState extends State<NotesPageContent> {
                             child: Icon(Icons.delete),
                           ),
                         ),
-                        key: ValueKey(document.id),
+                        key: ValueKey(noteModel.id),
                         confirmDismiss: (direction) async {
                           return direction == DismissDirection.endToStart;
                         },
                         onDismissed: (_) {
                           context.read<NotesPageContentCubit>().remove(
-                                documentID: document.id,
+                                documentID: noteModel.id,
                               );
                         },
                         child: Container(
@@ -105,17 +105,17 @@ class _NotesPageContentState extends State<NotesPageContent> {
                                 controlAffinity:
                                     ListTileControlAffinity.leading,
                                 title: Text(
-                                  document['titleNote'],
+                                  noteModel.titleNote,
                                   style: GoogleFonts.roboto(
                                     textStyle: const TextStyle(fontSize: 15),
                                     color: Colors.black,
                                   ),
                                 ),
-                                value: document['value'],
+                                value: noteModel.value,
                                 onChanged: (bool? value) {
                                   context.read<NotesPageContentCubit>().checked(
                                         value: value,
-                                        documentID: document.id,
+                                        documentID: noteModel.id,
                                       );
                                 },
                               ),
