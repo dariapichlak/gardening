@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/pages/notes_page_content/add_notes_page/cubit/add_notes_page_cubit.dart';
+import 'package:gardening/repositories/notes_repository.dart';
 
 class AddNotesPage extends StatefulWidget {
   const AddNotesPage({
@@ -17,7 +18,7 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddNotesPageContentCubit(),
+      create: (context) => AddNotesPageContentCubit(NotesRepository()),
       child: BlocListener<AddNotesPageContentCubit, AddNotesPageContentState>(
         listener: (context, state) {
           if (state.save) {

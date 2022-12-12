@@ -1,20 +1,21 @@
 import 'dart:async';
-import 'dart:html';
 
 import 'package:bloc/bloc.dart';
 import 'package:gardening/models/note_model.dart';
+import 'package:gardening/repositories/notes_repository.dart';
 import 'package:meta/meta.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 part 'notes_page_content_state.dart';
 
 class NotesPageContentCubit extends Cubit<NotesPageContentState> {
-  NotesPageContentCubit()
+  NotesPageContentCubit(this._notesRepository)
       : super(const NotesPageContentState(
           documents: [],
           isLoading: false,
           errorMessage: '',
           value: false,
         ));
+
+  final NotesRepository _notesRepository;
 
   StreamSubscription? _streamSubscription;
 
@@ -28,17 +29,10 @@ class NotesPageContentCubit extends Cubit<NotesPageContentState> {
       ),
     );
 
-    _streamSubscription = FirebaseFirestore.instance
-        .collection('notes')
-        .snapshots()
-        .listen((data) {
-      final noteModels = data.docs.map((document) {
-        return NoteModel(
-            titleNote: document['titleNote'], value: false, id: document.id);
-      }).toList();
+    _streamSubscription = _notesRepository.getNotesStream().listen((data) {
       emit(
         NotesPageContentState(
-          documents: noteModels,
+          documents: data,
           errorMessage: '',
           isLoading: false,
           value: false,
@@ -61,10 +55,7 @@ class NotesPageContentCubit extends Cubit<NotesPageContentState> {
 
   Future<void> remove({required String documentID}) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('notes')
-          .doc(documentID)
-          .delete();
+      await _notesRepository.delete(id: documentID);
     } catch (error) {
       emit(
         NotesPageContentState(
@@ -81,12 +72,7 @@ class NotesPageContentCubit extends Cubit<NotesPageContentState> {
   Future<void> checked(
       {required String documentID, required bool? value}) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('notes')
-          .doc(documentID)
-          .update({
-        'value': value,
-      });
+      await _notesRepository.checked(id: documentID, value: value);
     } catch (error) {
       emit(
         NotesPageContentState(
