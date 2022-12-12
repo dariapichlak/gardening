@@ -66,10 +66,11 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
                     TextField(
                       maxLines: null,
                       decoration: const InputDecoration.collapsed(
-                          hintText: 'Notes...',
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                          )),
+                        hintText: 'Notes...',
+                        hintStyle: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
                       onChanged: ((newValue) {
                         setState(() {
                           titleNote = newValue;

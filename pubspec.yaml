@@ -45,6 +45,7 @@ dependencies:
   google_fonts: ^3.0.1
   syncfusion_flutter_calendar: ^20.3.59
   intl: ^0.17.0
+  cloud_firestore: ^4.2.0
 
 dev_dependencies:
   flutter_test:

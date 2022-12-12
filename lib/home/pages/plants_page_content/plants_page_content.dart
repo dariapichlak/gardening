@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/pages/plants_page_content/add_plant_page/add_plant_page.dart';
 import 'package:gardening/home/pages/plants_page_content/cubit/plants_page_content_cubit.dart';
 import 'package:gardening/home/pages/plants_page_content/plant_card/plant_card.dart';
+import 'package:gardening/repositories/plants_repository.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PlantsPageContent extends StatelessWidget {
@@ -44,7 +45,8 @@ class PlantsPageContent extends StatelessWidget {
         ],
       ),
       body: BlocProvider(
-        create: (context) => PlantsPageContentCubit()..start(),
+        create: (context) =>
+            PlantsPageContentCubit(PlantsRepository())..start(),
         child: BlocBuilder<PlantsPageContentCubit, PlantsPageContentState>(
           builder: (context, state) {
             if (state.errorMessage.isNotEmpty) {
@@ -60,7 +62,11 @@ class PlantsPageContent extends StatelessWidget {
             if (state.documents.isNotEmpty) {
               final plantModels = state.documents;
               return Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.only(
+                  left: 20.0,
+                  bottom: 20,
+                  top: 20,
+                ),
                 child: ListView(
                   children: [
                     for (final plantModel in plantModels) ...[
@@ -92,20 +98,41 @@ class PlantsPageContent extends StatelessWidget {
                             );
                           },
                           child: Container(
-                            width: 350,
                             height: 125,
-                            padding: const EdgeInsets.all(8),
-                            margin: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: const Color.fromARGB(255, 86, 133, 94),
+                            padding: const EdgeInsets.only(
+                              left: 12,
+                              bottom: 12,
+                              top: 12,
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 5,
+                              vertical: 10,
+                            ),
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(70),
+                                // topRight: Radius.circular(70),
+                                bottomLeft: Radius.circular(70),
+                              ),
+
+                              // bottomRight: Radius.circular(70)),
+                              color: Color.fromARGB(255, 223, 224, 216),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromARGB(255, 203, 203, 203),
+                                    blurRadius: 5,
+                                    spreadRadius: 1,
+                                    offset: Offset(0, 5)),
+                              ],
                             ),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const CircleAvatar(
                                   backgroundImage:
-                                      AssetImage('images/plantimage.jpg'),
-                                  radius: 100,
+                                      AssetImage('images/plant1.jpg'),
+                                  radius: 50,
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -135,14 +162,17 @@ class PlantsPageContent extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    // Text(
-                                    //   plantModel.releaseDate.toString(),
-                                    //   style: const TextStyle(
-                                    //     fontSize: 10,
-                                    //   ),
-                                    // ),
+                                    Text(
+                                      plantModel.relaseDateFormatted(),
+                                      style: const TextStyle(
+                                        fontSize: 10,
+                                      ),
+                                    ),
                                   ],
-                                )
+                                ),
+                                Column(
+                                  children: const [Text('')],
+                                ),
                               ],
                             ),
                           ),

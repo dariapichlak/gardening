@@ -2,18 +2,20 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:gardening/models/plant_model.dart';
+import 'package:gardening/repositories/plants_repository.dart';
 import 'package:meta/meta.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 part 'plants_page_content_state.dart';
 
 class PlantsPageContentCubit extends Cubit<PlantsPageContentState> {
-  PlantsPageContentCubit()
+  PlantsPageContentCubit(this._plantsRepository)
       : super(const PlantsPageContentState(
           documents: [],
           isLoading: false,
           errorMessage: '',
         ));
+
+  final PlantsRepository _plantsRepository;
 
   StreamSubscription? _streamSubscription;
 
@@ -26,21 +28,10 @@ class PlantsPageContentCubit extends Cubit<PlantsPageContentState> {
       ),
     );
 
-    _streamSubscription = FirebaseFirestore.instance
-        .collection('plants')
-        .orderBy('releaseDate')
-        .snapshots()
-        .listen((data) {
-      final plantModels = data.docs.map((document) {
-        return PlantModel(
-          plantName: document['plantName'],
-          id: document.id,
-          releaseDate: (document['releaseDate'] as Timestamp).toDate(),
-        );
-      }).toList();
+    _streamSubscription = _plantsRepository.getPlantsStream().listen((data) {
       emit(
         PlantsPageContentState(
-          documents: plantModels,
+          documents: data,
           errorMessage: '',
           isLoading: false,
         ),
@@ -61,10 +52,7 @@ class PlantsPageContentCubit extends Cubit<PlantsPageContentState> {
 
   Future<void> remove({required String documentID}) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('plants')
-          .doc(documentID)
-          .delete();
+      await _plantsRepository.delete(id: documentID);
     } catch (error) {
       emit(
         PlantsPageContentState(

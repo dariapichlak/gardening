@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class PlantModel {
   PlantModel({
     required this.plantName,
@@ -11,5 +13,9 @@ class PlantModel {
 
   String daysToWatering() {
     return releaseDate.difference(DateTime.now()).inDays.toString();
+  }
+
+  String relaseDateFormatted() {
+    return DateFormat.yMMMEd().format(releaseDate);
   }
 }
