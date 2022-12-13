@@ -22,6 +22,16 @@ class PlantsRepository {
     return FirebaseFirestore.instance.collection('plants').doc(id).delete();
   }
 
+  Future<PlantModel> get({required String id}) async {
+    final document =
+        await FirebaseFirestore.instance.collection('plants').doc(id).get();
+    return PlantModel(
+      plantName: document['plantName'],
+      id: document.id,
+      releaseDate: (document['releaseDate'] as Timestamp).toDate(),
+    );
+  }
+
   Future<void> add(
     String plantName,
     DateTime releaseDate,

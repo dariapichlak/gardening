@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:gardening/models/note_model.dart';
 import 'package:gardening/repositories/notes_repository.dart';
-import 'package:meta/meta.dart';
 part 'notes_page_content_state.dart';
 
 class NotesPageContentCubit extends Cubit<NotesPageContentState> {

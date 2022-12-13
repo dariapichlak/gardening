@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:gardening/repositories/plants_repository.dart';
-import 'package:meta/meta.dart';
 
 part 'add_plant_page_state.dart';
 

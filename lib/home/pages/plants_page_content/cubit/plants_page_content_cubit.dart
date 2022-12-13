@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:gardening/models/plant_model.dart';
 import 'package:gardening/repositories/plants_repository.dart';
-import 'package:meta/meta.dart';
 
 part 'plants_page_content_state.dart';
 

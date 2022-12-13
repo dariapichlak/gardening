@@ -1,6 +1,5 @@
 part of 'notes_page_content_cubit.dart';
 
-@immutable
 class NotesPageContentState {
   final List<NoteModel> documents;
   final bool isLoading;

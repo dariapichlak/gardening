@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gardening/home/details/details_content/details_content.dart';
 import 'package:gardening/home/pages/plants_page_content/add_plant_page/add_plant_page.dart';
 import 'package:gardening/home/pages/plants_page_content/cubit/plants_page_content_cubit.dart';
 import 'package:gardening/home/pages/plants_page_content/plant_card/plant_card.dart';
@@ -93,7 +94,9 @@ class PlantsPageContent extends StatelessWidget {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => const PlantCard(),
+                                builder: (_) => DetailsContent(
+                                  id: plantModel.id,
+                                ),
                               ),
                             );
                           },
