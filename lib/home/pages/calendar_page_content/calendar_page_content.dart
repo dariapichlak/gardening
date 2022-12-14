@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gardening/home/settings/settings.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarPageContent extends StatefulWidget {
@@ -22,7 +23,10 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: IconButton(
             icon: const Icon(Icons.person),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const Settings()));
+            },
           ),
         ),
         elevation: 5,
