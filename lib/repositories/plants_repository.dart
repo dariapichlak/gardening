@@ -1,9 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gardening/models/plant_model.dart';
 
 class PlantsRepository {
   Stream<List<PlantModel>> getPlantsStream() {
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
     return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
         .collection('plants')
         .orderBy('releaseDate')
         .snapshots()
@@ -19,12 +26,29 @@ class PlantsRepository {
   }
 
   Future<void> delete({required String id}) {
-    return FirebaseFirestore.instance.collection('plants').doc(id).delete();
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('plants')
+        .doc(id)
+        .delete();
   }
 
   Future<PlantModel> get({required String id}) async {
-    final document =
-        await FirebaseFirestore.instance.collection('plants').doc(id).get();
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    final document = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('plants')
+        .doc(id)
+        .get();
     return PlantModel(
       plantName: document['plantName'],
       id: document.id,
@@ -36,7 +60,15 @@ class PlantsRepository {
     String plantName,
     DateTime releaseDate,
   ) async {
-    await FirebaseFirestore.instance.collection('plants').add({
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('plants')
+        .add({
       'plantName': plantName,
       'releaseDate': releaseDate,
     });

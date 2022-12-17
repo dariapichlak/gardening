@@ -1,9 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gardening/models/note_model.dart';
 
 class NotesRepository {
   Stream<List<NoteModel>> getNotesStream() {
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
     return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
         .collection('notes')
         .snapshots()
         .map((querySnapshot) {
@@ -18,17 +25,43 @@ class NotesRepository {
   }
 
   Future<void> delete({required String id}) {
-    return FirebaseFirestore.instance.collection('notes').doc(id).delete();
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('notes')
+        .doc(id)
+        .delete();
   }
 
   Future<void> checked({required String id, required bool? value}) async {
-    return FirebaseFirestore.instance.collection('notes').doc(id).update({
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('notes')
+        .doc(id)
+        .update({
       'value': value,
     });
   }
 
   Future<void> add(String titleNote) {
-    return FirebaseFirestore.instance.collection('notes').add({
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('notes')
+        .add({
       'titleNote': titleNote,
       'value': false,
     });
