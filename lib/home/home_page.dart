@@ -1,7 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gardening/home/pages/calendar_page_content/calendar_page_content.dart';
-import 'package:gardening/home/settings/settings.dart';
 import 'package:gardening/home/pages/notes_page_content/notes_page_content.dart';
 import 'package:gardening/home/pages/plants_page_content/plants_page_content.dart';
 
