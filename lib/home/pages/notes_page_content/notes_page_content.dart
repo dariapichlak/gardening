@@ -78,7 +78,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(
-                              top: 5.0, bottom: 20, left: 25),
+                              top: 2.0, bottom: 20, left: 25),
                           child: Text(
                             'Notes',
                             style: GoogleFonts.antic(fontSize: 30),
@@ -100,7 +100,6 @@ class _NotesPageContentState extends State<NotesPageContent> {
                         ),
                         child: ListView(
                           children: [
-                            // const Text('Notes'),
                             const SizedBox(height: 40),
                             for (final noteModel in noteModels) ...[
                               Dismissible(
