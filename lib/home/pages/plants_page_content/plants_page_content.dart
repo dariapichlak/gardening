@@ -5,6 +5,7 @@ import 'package:gardening/home/pages/plants_page_content/add_plant_page/add_plan
 import 'package:gardening/home/pages/plants_page_content/cubit/plants_page_content_cubit.dart';
 import 'package:gardening/repositories/plants_repository.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class PlantsPageContent extends StatelessWidget {
   const PlantsPageContent({
@@ -84,6 +85,14 @@ class PlantsPageContent extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
+                  // const TextField(
+                  //   decoration: InputDecoration(
+                  //     hintText: 'Search...',
+                  //     filled: true,
+                  //     fillColor: Colors.white,
+
+                  //   ),
+                  // ),
                   Container(
                     width: 340,
                     height: 50,
@@ -98,43 +107,36 @@ class PlantsPageContent extends StatelessWidget {
                             offset: Offset(0, 6)),
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 242, 242, 242),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(0),
-                          topRight: Radius.circular(0),
+                    child: const TextField(
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        hintText: 'Search...',
+                        border: InputBorder.none,
+                        icon: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
-                      child: ListView(
-                        children: [
-                          const SizedBox(height: 0),
-                          for (final plantModel in plantModels) ...[
-                            Dismissible(
-                              background: const DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 325.0),
-                                  child: Icon(Icons.delete),
-                                ),
-                              ),
-                              key: ValueKey(plantModel.id),
-                              confirmDismiss: (direction) async {
-                                return direction == DismissDirection.endToStart;
-                              },
-                              onDismissed: (_) {
-                                context.read<PlantsPageContentCubit>().remove(
-                                      documentID: plantModel.id,
-                                    );
-                              },
-                              child: InkWell(
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(0.0),
+                      child: Container(
+                        margin: const EdgeInsets.all(20),
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 242, 242, 242),
+                        ),
+                        child: GridView.count(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 20,
+                          children: [
+                            for (final plantModel in plantModels) ...[
+                              InkWell(
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
@@ -146,17 +148,8 @@ class PlantsPageContent extends StatelessWidget {
                                 },
                                 child: Center(
                                   child: Container(
-                                    height: 180,
-                                    width: 150,
-                                    padding: const EdgeInsets.only(
-                                      left: 12,
-                                      bottom: 12,
-                                      top: 12,
-                                    ),
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 5,
-                                      vertical: 10,
-                                    ),
+                                    height: 190,
+                                    width: 160,
                                     decoration: const BoxDecoration(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(25)),
@@ -177,9 +170,22 @@ class PlantsPageContent extends StatelessWidget {
                                         Center(
                                           child: Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                MainAxisAlignment.start,
                                             children: [
-                                              // Image here
+                                              Container(
+                                                width: 160,
+                                                height: 105,
+                                                decoration: const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(25),
+                                                    topRight:
+                                                        Radius.circular(25),
+                                                  ),
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
                                               Text(
                                                 plantModel.plantName,
                                                 style: GoogleFonts.antic(
@@ -224,9 +230,9 @@ class PlantsPageContent extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                            ),
+                            ],
                           ],
-                        ],
+                        ),
                       ),
                     ),
                   ),
