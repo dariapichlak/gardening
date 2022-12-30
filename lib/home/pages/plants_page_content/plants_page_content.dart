@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/details/details_content/details_content.dart';
 import 'package:gardening/home/pages/plants_page_content/add_plant_page/add_plant_page.dart';
 import 'package:gardening/home/pages/plants_page_content/cubit/plants_page_content_cubit.dart';
+import 'package:gardening/home/settings/settings.dart';
 import 'package:gardening/repositories/plants_repository.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class PlantsPageContent extends StatelessWidget {
   const PlantsPageContent({
@@ -25,7 +25,10 @@ class PlantsPageContent extends StatelessWidget {
               Icons.person,
               color: Color.fromARGB(255, 172, 172, 172),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const Settings()));
+            },
           ),
         ),
         shape: const RoundedRectangleBorder(

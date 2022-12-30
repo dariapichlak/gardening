@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/pages/notes_page_content/add_notes_page/add_notes_page.dart';
 import 'package:gardening/home/pages/notes_page_content/cubit/notes_page_content_cubit.dart';
+import 'package:gardening/home/settings/settings.dart';
 import 'package:gardening/repositories/notes_repository.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -28,7 +29,10 @@ class _NotesPageContentState extends State<NotesPageContent> {
               Icons.person,
               color: Color.fromARGB(255, 172, 172, 172),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const Settings()));
+            },
           ),
         ),
         shape: const RoundedRectangleBorder(
