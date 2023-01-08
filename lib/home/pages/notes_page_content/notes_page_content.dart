@@ -47,7 +47,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
             child: IconButton(
               icon: const Icon(
                 Icons.notes,
-                color: Color.fromARGB(255, 172, 172, 172),
+                color: Color.fromARGB(255, 86, 133, 94),
               ),
               onPressed: () {
                 Navigator.of(context).push(
@@ -168,7 +168,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
                                 ),
                               ),
                               const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 33),
                                 child: Divider(
                                   color: Colors.grey,
                                   thickness: 1,

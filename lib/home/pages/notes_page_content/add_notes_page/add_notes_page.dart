@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/pages/notes_page_content/add_notes_page/cubit/add_notes_page_cubit.dart';
 import 'package:gardening/repositories/notes_repository.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AddNotesPage extends StatefulWidget {
   const AddNotesPage({
@@ -57,7 +56,6 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: IconButton(
-                        color: Colors.grey,
                         onPressed: titleNote.isEmpty
                             ? null
                             : () {
@@ -65,7 +63,10 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
                                       titleNote,
                                     );
                               },
-                        icon: const Icon(Icons.save)),
+                        icon: const Icon(
+                          Icons.save,
+                          color: Colors.grey,
+                        )),
                   )
                 ],
                 title: const Text(''),
@@ -126,12 +127,3 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
     );
   }
 }
-
-
-//  onPressed: titleNote.isEmpty
-//                     ? null
-//                     : () {
-//                         context.read<AddNotesPageContentCubit>().add(
-//                               titleNote,
-//                             );
-//                       },

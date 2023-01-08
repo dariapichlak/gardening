@@ -15,7 +15,7 @@ class PlantsPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 242, 242, 242),
+      backgroundColor: const Color.fromARGB(255, 254, 254, 254),
       appBar: AppBar(
         elevation: 0,
         leading: Padding(
@@ -35,14 +35,14 @@ class PlantsPageContent extends StatelessWidget {
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(0),
                 bottomRight: Radius.circular(0))),
-        backgroundColor: const Color.fromARGB(255, 242, 242, 242),
+        backgroundColor: const Color.fromARGB(255, 254, 254, 254),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: IconButton(
               icon: const Icon(
                 Icons.add,
-                color: Color.fromARGB(255, 172, 172, 172),
+                color: Color.fromARGB(255, 86, 133, 94),
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -88,14 +88,6 @@ class PlantsPageContent extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  // const TextField(
-                  //   decoration: InputDecoration(
-                  //     hintText: 'Search...',
-                  //     filled: true,
-                  //     fillColor: Colors.white,
-
-                  //   ),
-                  // ),
                   Container(
                     width: 340,
                     height: 50,
@@ -105,9 +97,9 @@ class PlantsPageContent extends StatelessWidget {
                       boxShadow: [
                         BoxShadow(
                             color: Color.fromARGB(255, 203, 203, 203),
-                            blurRadius: 6,
-                            spreadRadius: 0.3,
-                            offset: Offset(0, 6)),
+                            blurRadius: 9,
+                            spreadRadius: 0.5,
+                            offset: Offset(0, 3)),
                       ],
                     ),
                     child: const TextField(
@@ -131,7 +123,7 @@ class PlantsPageContent extends StatelessWidget {
                       child: Container(
                         margin: const EdgeInsets.all(20),
                         decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 242, 242, 242),
+                          color: Color.fromARGB(255, 254, 254, 254),
                         ),
                         child: GridView.count(
                           crossAxisCount: 2,
@@ -172,12 +164,10 @@ class PlantsPageContent extends StatelessWidget {
                                       children: [
                                         Center(
                                           child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
                                             children: [
                                               Container(
                                                 width: 160,
-                                                height: 105,
+                                                height: 120,
                                                 decoration: const BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.only(
@@ -189,44 +179,83 @@ class PlantsPageContent extends StatelessWidget {
                                                   color: Colors.grey,
                                                 ),
                                               ),
-                                              Text(
-                                                plantModel.plantName,
-                                                style: GoogleFonts.antic(
-                                                    fontSize: 18),
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
+                                              const SizedBox(height: 5),
                                               Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
-                                                  Text(
-                                                    plantModel.daysToWatering(),
-                                                    style: const TextStyle(
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                  Container(
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  50)),
+                                                      color: Color.fromARGB(
+                                                          255, 142, 180, 143),
+                                                    ),
+                                                    width: 32,
+                                                    height: 32,
+                                                    child: Center(
+                                                      child: Text(
+                                                        plantModel
+                                                            .daysToWatering(),
+                                                        style: const TextStyle(
+                                                          fontSize: 16,
+                                                          // fontWeight:
+                                                          //     FontWeight.bold,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                  const Text(
-                                                    ' days to watering',
-                                                    style: TextStyle(
-                                                      fontSize: 10,
-                                                    ),
+                                                  const SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Container(
+                                                        width: 100,
+                                                        color:
+                                                            Colors.transparent,
+                                                        child: Center(
+                                                          child: Text(
+                                                            plantModel
+                                                                .plantName,
+                                                            style: GoogleFonts
+                                                                .antic(
+                                                                    fontSize:
+                                                                        18),
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      const Text(
+                                                        'days to watering',
+                                                        style: TextStyle(
+                                                          fontSize: 11,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
-                                              Text(
-                                                plantModel
-                                                    .relaseDateFormatted(),
-                                                style: const TextStyle(
-                                                  fontSize: 10,
-                                                ),
-                                              ),
+
+                                              // Text(
+                                              //   plantModel
+                                              //       .relaseDateFormatted(),
+                                              //   style: const TextStyle(
+                                              //     fontSize: 10,
+                                              //   ),
+                                              // ),
                                             ],
                                           ),
-                                        ),
-                                        Column(
-                                          children: const [Text('')],
                                         ),
                                       ],
                                     ),

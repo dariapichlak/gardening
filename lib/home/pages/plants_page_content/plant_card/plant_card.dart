@@ -10,11 +10,13 @@ class PlantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          elevation: 5,
           leading: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(
+                Icons.person,
+                color: Color.fromARGB(255, 172, 172, 172),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -22,14 +24,18 @@ class PlantCard extends StatelessWidget {
           ),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(35),
-                  bottomRight: Radius.circular(35))),
-          backgroundColor: const Color.fromARGB(255, 86, 133, 94),
+                  bottomLeft: Radius.circular(0),
+                  bottomRight: Radius.circular(0))),
+          elevation: 0,
+          backgroundColor: const Color.fromARGB(255, 242, 242, 242),
           actions: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: IconButton(
-                icon: const Icon(Icons.edit),
+                icon: const Icon(
+                  Icons.settings_applications,
+                  color: Color.fromARGB(255, 86, 133, 94),
+                ),
                 onPressed: () {},
               ),
             ),

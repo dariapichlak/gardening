@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gardening/home/settings/settings.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarPageContent extends StatefulWidget {
@@ -46,21 +45,24 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
         padding: const EdgeInsets.only(top: 0.0),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 2.0, bottom: 20, left: 25),
-                  child: Text(
-                    '',
-                    style: GoogleFonts.antic(fontSize: 30),
-                  ),
-                ),
-              ],
+            Container(
+              width: 240,
+              height: 240,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(140)),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text('Gdynia'),
+                  Text('12 oC'),
+                  Text('sunny'),
+                ],
+              ),
             ),
             const SizedBox(
-              height: 150,
+              height: 30,
             ),
             Expanded(
               child: Container(
@@ -86,16 +88,16 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
                       textAlign: TextAlign.center,
                       textStyle: TextStyle(
                           fontSize: 18,
-                          fontStyle: FontStyle.normal,
+                          fontFamily: 'Antic',
                           letterSpacing: 5,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w300),
+                          color: Color.fromARGB(255, 86, 133, 94),
+                          fontWeight: FontWeight.w400),
                     ),
-                    todayHighlightColor: const Color.fromARGB(255, 255, 196, 2),
+                    todayHighlightColor: const Color.fromARGB(255, 86, 133, 94),
                     selectionDecoration: BoxDecoration(
                       color: Colors.transparent,
                       border: Border.all(
-                        color: const Color.fromARGB(255, 255, 196, 2),
+                        color: const Color.fromARGB(255, 86, 133, 94),
                         width: 1.5,
                       ),
                       shape: BoxShape.circle,
