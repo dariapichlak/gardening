@@ -22,7 +22,7 @@ class PlantsPageContent extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: IconButton(
             icon: const Icon(
-              Icons.person,
+              Icons.settings,
               color: Color.fromARGB(255, 172, 172, 172),
             ),
             onPressed: () {
@@ -176,7 +176,11 @@ class PlantsPageContent extends StatelessWidget {
                                                     topRight:
                                                         Radius.circular(25),
                                                   ),
-                                                  color: Colors.grey,
+                                                  image: DecorationImage(
+                                                    image: AssetImage(
+                                                        'images/plantimage.jpg'),
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
                                               ),
                                               const SizedBox(height: 5),

@@ -26,7 +26,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: IconButton(
             icon: const Icon(
-              Icons.person,
+              Icons.settings,
               color: Color.fromARGB(255, 172, 172, 172),
             ),
             onPressed: () {

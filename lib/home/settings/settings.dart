@@ -41,7 +41,7 @@ class Settings extends StatelessWidget {
                   padding:
                       const EdgeInsets.only(top: 2.0, bottom: 20, left: 25),
                   child: Text(
-                    'H!',
+                    'Settings',
                     style: GoogleFonts.antic(fontSize: 30),
                   ),
                 ),
@@ -67,11 +67,13 @@ class Settings extends StatelessWidget {
                       leading: const Icon(Icons.location_pin),
                       onTap: () {},
                     ),
+                    
                     ListTile(
                       title: const Text('Language'),
                       leading: const Icon(Icons.language_outlined),
                       onTap: () {},
                     ),
+                    
                     ListTile(
                       title: const Text('Change Password'),
                       leading: const Icon(Icons.password_outlined),
