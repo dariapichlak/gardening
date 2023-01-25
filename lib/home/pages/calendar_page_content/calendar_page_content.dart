@@ -26,7 +26,7 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
     return BlocProvider(
       create: (context) => CalendarPageContentCubit(
           WeatherRopository(WeatherRemoteDataSource())),
-      child: BlocListener<CalendarPageContentCubit, CalendarPageContentState>(
+      child: BlocConsumer<CalendarPageContentCubit, CalendarPageContentState>(
         listener: (context, state) {
           if (state.status == Status.error) {
             final errorMessage = state.errorMessage ?? 'Unknown error';
@@ -38,111 +38,109 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
             );
           }
         },
-        child: BlocBuilder<CalendarPageContentCubit, CalendarPageContentState>(
-          builder: (context, state) {
-            final weatherModel = state.model;
-            return Scaffold(
+        builder: (context, state) {
+          final weatherModel = state.model;
+          return Scaffold(
+            backgroundColor: const Color.fromARGB(255, 86, 133, 94),
+            appBar: AppBar(
+              leading: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const Settings()));
+                  },
+                ),
+              ),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(0),
+                  bottomRight: Radius.circular(0),
+                ),
+              ),
+              elevation: 0,
               backgroundColor: const Color.fromARGB(255, 86, 133, 94),
-              appBar: AppBar(
-                leading: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.settings,
-                      color: Colors.white,
+            ),
+            body: Padding(
+              padding: const EdgeInsets.only(top: 0.0),
+              child: Column(
+                children: [
+                  Container(
+                    width: 240,
+                    height: 240,
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 86, 133, 94),
+                      borderRadius: BorderRadius.all(Radius.circular(140)),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const Settings()));
-                    },
+                    child: Builder(builder: (context) {
+                      if (state.status == Status.loading) {
+                        return const Text('Weather is loading');
+                      }
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (weatherModel != null)
+                            _DisplayWeatherWidget(weatherModel: weatherModel),
+                          _SearchWeather(),
+                        ],
+                      );
+                    }),
                   ),
-                ),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(0),
-                    bottomRight: Radius.circular(0),
+                  const SizedBox(
+                    height: 30,
                   ),
-                ),
-                elevation: 0,
-                backgroundColor: const Color.fromARGB(255, 86, 133, 94),
-              ),
-              body: Padding(
-                padding: const EdgeInsets.only(top: 0.0),
-                child: Column(
-                  children: [
-                    Container(
-                      width: 240,
-                      height: 240,
+                  Expanded(
+                    child: Container(
                       decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 86, 133, 94),
-                        borderRadius: BorderRadius.all(Radius.circular(140)),
-                      ),
-                      child: Builder(builder: (context) {
-                        if (state.status == Status.loading) {
-                          return const Text('Weather is loading');
-                        }
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (weatherModel != null)
-                              _DisplayWeatherWidget(weatherModel: weatherModel),
-                            _SearchWeather(),
-                          ],
-                        );
-                      }),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Expanded(
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(blurRadius: 15, offset: Offset(0, 10)),
-                          ],
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(35),
-                            topRight: Radius.circular(35),
-                          ),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(blurRadius: 15, offset: Offset(0, 10)),
+                        ],
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(35),
+                          topRight: Radius.circular(35),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: SfCalendar(
-                            view: CalendarView.month,
-                            initialSelectedDate: DateTime.now(),
-                            cellBorderColor: Colors.transparent,
-                            showNavigationArrow: true,
-                            headerHeight: 70,
-                            headerStyle: const CalendarHeaderStyle(
-                              textAlign: TextAlign.center,
-                              textStyle: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'Antic',
-                                  letterSpacing: 5,
-                                  color: Color.fromARGB(255, 86, 133, 94),
-                                  fontWeight: FontWeight.w400),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: SfCalendar(
+                          view: CalendarView.month,
+                          initialSelectedDate: DateTime.now(),
+                          cellBorderColor: Colors.transparent,
+                          showNavigationArrow: true,
+                          headerHeight: 70,
+                          headerStyle: const CalendarHeaderStyle(
+                            textAlign: TextAlign.center,
+                            textStyle: TextStyle(
+                                fontSize: 18,
+                                fontFamily: 'Antic',
+                                letterSpacing: 5,
+                                color: Color.fromARGB(255, 86, 133, 94),
+                                fontWeight: FontWeight.w400),
+                          ),
+                          todayHighlightColor:
+                              const Color.fromARGB(255, 86, 133, 94),
+                          selectionDecoration: BoxDecoration(
+                            color: Colors.transparent,
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 86, 133, 94),
+                              width: 1.5,
                             ),
-                            todayHighlightColor:
-                                const Color.fromARGB(255, 86, 133, 94),
-                            selectionDecoration: BoxDecoration(
-                              color: Colors.transparent,
-                              border: Border.all(
-                                color: const Color.fromARGB(255, 86, 133, 94),
-                                width: 1.5,
-                              ),
-                              shape: BoxShape.circle,
-                            ),
+                            shape: BoxShape.circle,
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
