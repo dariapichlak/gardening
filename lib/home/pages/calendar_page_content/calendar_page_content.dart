@@ -171,7 +171,7 @@ class _DisplayWeatherWidget extends StatelessWidget {
             ),
             Text(
               '${weatherModel.temperature} °C',
-              style: GoogleFonts.roboto(fontSize: 70, color: Colors.white),
+              style: GoogleFonts.roboto(fontSize: 60, color: Colors.white),
             ),
             const SizedBox(
               height: 5,
