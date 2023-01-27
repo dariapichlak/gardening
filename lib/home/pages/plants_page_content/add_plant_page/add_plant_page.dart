@@ -139,6 +139,21 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
     }
   }
 
+  Future pickImageC() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+
+      setState(() {
+        this.image = imageTemp;
+      });
+    } on PlatformException catch (error) {
+      print('Error: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -260,7 +275,15 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                 ],
               ),
               child: image != null
-                  ? Image.file(image!)
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(200),
+                      child: Image.file(
+                        image!,
+                        width: 260,
+                        height: 260,
+                        fit: BoxFit.cover,
+                      ),
+                    )
                   : const CircleAvatar(
                       radius: 130.0,
                       backgroundImage: AssetImage('images/plantimage.jpg')),
@@ -306,7 +329,9 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                               ),
                               const SizedBox(height: 15),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  pickImageC();
+                                },
                                 splashColor: Colors.green,
                                 child: Row(
                                   children: const [
