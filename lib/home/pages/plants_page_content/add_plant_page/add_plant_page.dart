@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/pages/plants_page_content/add_plant_page/cubit/add_plant_page_cubit.dart';
 import 'package:gardening/repositories/plants_repository.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AddPlantPage extends StatefulWidget {
@@ -102,7 +106,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
   }
 }
 
-class _AddPlantPageBody extends StatelessWidget {
+class _AddPlantPageBody extends StatefulWidget {
   const _AddPlantPageBody({
     required this.onTitleChanged,
     required this.onDateChanged,
@@ -112,6 +116,28 @@ class _AddPlantPageBody extends StatelessWidget {
   final Function(String) onTitleChanged;
   final Function(DateTime?) onDateChanged;
   final String? selectedDateFormatted;
+
+  @override
+  State<_AddPlantPageBody> createState() => _AddPlantPageBodyState();
+}
+
+class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
+  File? image;
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+
+      setState(() {
+        this.image = imageTemp;
+      });
+    } on PlatformException catch (error) {
+      print('Error: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +158,7 @@ class _AddPlantPageBody extends StatelessWidget {
                 child: ListView(
                   children: [
                     TextField(
-                      onChanged: onTitleChanged,
+                      onChanged: widget.onTitleChanged,
                       textAlign: TextAlign.start,
                       decoration: InputDecoration(
                         hintText: 'Plant Name',
@@ -166,7 +192,7 @@ class _AddPlantPageBody extends StatelessWidget {
                             const Duration(days: 365 * 10),
                           ),
                         );
-                        onDateChanged(selectedDate);
+                        widget.onDateChanged(selectedDate);
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -176,7 +202,7 @@ class _AddPlantPageBody extends StatelessWidget {
                             color: Colors.white,
                           ),
                           Text(
-                            selectedDateFormatted ?? 'When watering?',
+                            widget.selectedDateFormatted ?? 'When watering?',
                             style: const TextStyle(
                               color: Colors.white,
                             ),
@@ -233,12 +259,77 @@ class _AddPlantPageBody extends StatelessWidget {
                       color: Colors.grey),
                 ],
               ),
-              child: const CircleAvatar(
-                radius: 130.0,
-                backgroundImage: AssetImage('images/plantimage.jpg'),
-              ),
+              child: image != null
+                  ? Image.file(image!)
+                  : const CircleAvatar(
+                      radius: 130.0,
+                      backgroundImage: AssetImage('images/plantimage.jpg')),
             ),
           ),
+          Positioned(
+              top: 220,
+              right: 8,
+              child: RawMaterialButton(
+                elevation: 10,
+                fillColor: const Color.fromARGB(255, 113, 169, 122),
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(10),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text(
+                            'Choose option',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20,
+                                color: Colors.green),
+                          ),
+                          content: SingleChildScrollView(
+                            child: ListBody(children: [
+                              InkWell(
+                                onTap: () {
+                                  pickImage();
+                                },
+                                splashColor: Colors.green,
+                                child: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.camera,
+                                      color: Colors.green,
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text('Gallery'),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              InkWell(
+                                onTap: () {},
+                                splashColor: Colors.green,
+                                child: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.image,
+                                      color: Colors.green,
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text('Camera'),
+                                  ],
+                                ),
+                              )
+                            ]),
+                          ),
+                        );
+                      });
+                },
+                child: const Icon(
+                  Icons.add_a_photo_outlined,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ))
         ],
       ),
     );

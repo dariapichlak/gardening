@@ -59,42 +59,37 @@ class Settings extends StatelessWidget {
                     topRight: Radius.circular(35),
                   ),
                 ),
-                child: ListView(
-                  children: [
-                    const SizedBox(height: 40),
-                    ListTile(
-                      title: const Text('Location'),
-                      leading: const Icon(Icons.location_pin),
-                      onTap: () {},
-                    ),
-                    
-                    ListTile(
-                      title: const Text('Language'),
-                      leading: const Icon(Icons.language_outlined),
-                      onTap: () {},
-                    ),
-                    
-                    ListTile(
-                      title: const Text('Change Password'),
-                      leading: const Icon(Icons.password_outlined),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      title: const Text('Delete all data / Reset App'),
-                      leading: const Icon(Icons.delete_forever),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      title: const Text('Privace Policy'),
-                      leading: const Icon(Icons.privacy_tip),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      title: const Text('App Version'),
-                      leading: const Icon(Icons.info_outline_rounded),
-                      onTap: () {},
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20.0, top: 30),
+                  child: ListView(
+                    children: [
+                      ListTile(
+                        title: const Text('Language'),
+                        leading: const Icon(Icons.language_outlined),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        title: const Text('Change Password'),
+                        leading: const Icon(Icons.password_outlined),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        title: const Text('Delete all data / Reset App'),
+                        leading: const Icon(Icons.delete_forever),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        title: const Text('Privace Policy'),
+                        leading: const Icon(Icons.privacy_tip),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        title: const Text('App Version'),
+                        leading: const Icon(Icons.info_outline_rounded),
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
