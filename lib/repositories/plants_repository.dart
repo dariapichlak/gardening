@@ -20,6 +20,7 @@ class PlantsRepository {
           plantName: document['plantName'],
           id: document.id,
           releaseDate: (document['releaseDate'] as Timestamp).toDate(),
+          imageUrl: document['imageUrl'],
         );
       }).toList();
     });
@@ -53,12 +54,14 @@ class PlantsRepository {
       plantName: document['plantName'],
       id: document.id,
       releaseDate: (document['releaseDate'] as Timestamp).toDate(),
+      imageUrl: document['imageUrl'],
     );
   }
 
   Future<void> add(
     String plantName,
     DateTime releaseDate,
+    String imageUrl,
   ) async {
     final userID = FirebaseAuth.instance.currentUser?.uid;
     if (userID == null) {
@@ -71,6 +74,7 @@ class PlantsRepository {
         .add({
       'plantName': plantName,
       'releaseDate': releaseDate,
+      'imageUrl': imageUrl,
     });
   }
 }

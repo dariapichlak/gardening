@@ -1,7 +1,8 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/pages/plants_page_content/add_plant_page/cubit/add_plant_page_cubit.dart';
 import 'package:gardening/repositories/plants_repository.dart';
@@ -19,6 +20,7 @@ class AddPlantPage extends StatefulWidget {
 }
 
 class _AddPlantPageState extends State<AddPlantPage> {
+  String? _imageUrl;
   String? _plantName;
   DateTime? _releaseDate;
 
@@ -71,12 +73,15 @@ class _AddPlantPageState extends State<AddPlantPage> {
                         Icons.save,
                         color: Colors.grey,
                       ),
-                      onPressed: _plantName == null || _releaseDate == null
+                      onPressed: _plantName == null ||
+                              _releaseDate == null ||
+                              _imageUrl == null
                           ? null
                           : () {
                               context.read<AddPlantPageCubit>().add(
                                     _plantName!,
                                     _releaseDate!,
+                                    _imageUrl!,
                                   );
                             },
                     ),
@@ -92,6 +97,11 @@ class _AddPlantPageState extends State<AddPlantPage> {
                 onDateChanged: (newValue) {
                   setState(() {
                     _releaseDate = newValue;
+                  });
+                },
+                onImageUrlChanged: (newValue) {
+                  setState(() {
+                    _imageUrl = newValue;
                   });
                 },
                 selectedDateFormatted: _releaseDate == null
@@ -111,48 +121,24 @@ class _AddPlantPageBody extends StatefulWidget {
     required this.onTitleChanged,
     required this.onDateChanged,
     required this.selectedDateFormatted,
+    required this.onImageUrlChanged,
     Key? key,
   }) : super(key: key);
   final Function(String) onTitleChanged;
   final Function(DateTime?) onDateChanged;
   final String? selectedDateFormatted;
+  final Function(String) onImageUrlChanged;
 
   @override
   State<_AddPlantPageBody> createState() => _AddPlantPageBodyState();
 }
 
 class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
-  File? image;
+  File? file;
+  String imageUrl = '';
 
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-
-      final imageTemp = File(image.path);
-
-      setState(() {
-        this.image = imageTemp;
-      });
-    } on PlatformException catch (error) {
-      print('Error: $error');
-    }
-  }
-
-  Future pickImageC() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
-
-      final imageTemp = File(image.path);
-
-      setState(() {
-        this.image = imageTemp;
-      });
-    } on PlatformException catch (error) {
-      print('Error: $error');
-    }
-  }
+  // CollectionReference reference =
+  //     FirebaseFirestore.instance.collection('plants');
 
   @override
   Widget build(BuildContext context) {
@@ -274,11 +260,11 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                       color: Colors.grey),
                 ],
               ),
-              child: image != null
+              child: file != null
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(200),
                       child: Image.file(
-                        image!,
+                        file!,
                         width: 260,
                         height: 260,
                         fit: BoxFit.cover,
@@ -286,7 +272,7 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                     )
                   : const CircleAvatar(
                       radius: 130.0,
-                      backgroundImage: AssetImage('images/plantimage.jpg')),
+                      backgroundImage: AssetImage('images/imagetemp.jpg')),
             ),
           ),
           Positioned(
@@ -312,8 +298,39 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                           content: SingleChildScrollView(
                             child: ListBody(children: [
                               InkWell(
-                                onTap: () {
-                                  pickImage();
+                                onTap: () async {
+                                  widget.onImageUrlChanged;
+                                  ImagePicker imagePicker = ImagePicker();
+                                  XFile? file = await imagePicker.pickImage(
+                                      source: ImageSource.gallery);
+                                  // print('${file?.path}');
+                                  if (file == null) return;
+
+                                  final imageTemp = File(file.path);
+
+                                  setState(() {
+                                    this.file = imageTemp;
+                                  });
+
+                                  String fileName = DateTime.now()
+                                      .microsecondsSinceEpoch
+                                      .toString();
+
+                                  Reference referenceRoot =
+                                      FirebaseStorage.instance.ref();
+                                  Reference referenceDirImages =
+                                      referenceRoot.child('images');
+                                  Reference referenceImageToUpload =
+                                      referenceDirImages.child(fileName);
+                                  try {
+                                    await referenceImageToUpload
+                                        .putFile(File(file.path));
+
+                                    imageUrl = await referenceImageToUpload
+                                        .getDownloadURL();
+                                  } catch (error) {
+                                    throw ('Error: $error');
+                                  }
                                 },
                                 splashColor: Colors.green,
                                 child: Row(
@@ -329,8 +346,39 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                               ),
                               const SizedBox(height: 15),
                               InkWell(
-                                onTap: () {
-                                  pickImageC();
+                                onTap: () async {
+                                  widget.onImageUrlChanged;
+                                  ImagePicker imagePicker = ImagePicker();
+                                  XFile? file = await imagePicker.pickImage(
+                                      source: ImageSource.camera);
+                                  // print('${file?.path}');
+                                  if (file == null) return;
+
+                                  final imageTemp = File(file.path);
+
+                                  setState(() {
+                                    this.file = imageTemp;
+                                  });
+
+                                  String fileName = DateTime.now()
+                                      .microsecondsSinceEpoch
+                                      .toString();
+
+                                  Reference referenceRoot =
+                                      FirebaseStorage.instance.ref();
+                                  Reference referenceDirImages =
+                                      referenceRoot.child('images');
+                                  Reference referenceImageToUpload =
+                                      referenceDirImages.child(fileName);
+                                  try {
+                                    await referenceImageToUpload
+                                        .putFile(File(file.path));
+
+                                    imageUrl = await referenceImageToUpload
+                                        .getDownloadURL();
+                                  } catch (error) {
+                                    throw ('Error: $error');
+                                  }
                                 },
                                 splashColor: Colors.green,
                                 child: Row(
@@ -360,86 +408,3 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
     );
   }
 }
-
-
-
-//         Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 40.0),
-//           child: ElevatedButton(
-//             style: ButtonStyle(
-//               backgroundColor: MaterialStateProperty.all<Color>(
-//                 const Color.fromARGB(255, 113, 169, 122),
-//               ),
-//             ),
-//             onPressed: () async {
-//               final selectedDate = await showDatePicker(
-//                 context: context,
-//                 initialDate: DateTime.now(),
-//                 firstDate: DateTime.now(),
-//                 lastDate: DateTime.now().add(
-//                   const Duration(days: 365 * 10),
-//                 ),
-//               );
-//               onDateChanged(selectedDate);
-//             },
-//             child: Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 const Icon(
-//                   Icons.water_drop_outlined,
-//                   color: Colors.white,
-//                 ),
-//                 Text(
-//                   selectedDateFormatted ?? 'When watering?',
-//                   style: const TextStyle(
-//                     color: Colors.white,
-//                   ),
-//                 ),
-//                 const Icon(
-//                   Icons.calendar_month_outlined,
-//                   color: Colors.white,
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//         const SizedBox(
-//           height: 20,
-//         ),
-//         Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 40.0),
-//           child: ExpansionTile(
-//             leading: const Icon(Icons.edit),
-//             title: Text(
-//               'Diary',
-//               style: GoogleFonts.roboto(
-//                 fontSize: 15,
-//                 fontWeight: FontWeight.bold,
-//                 color: const Color.fromARGB(255, 86, 133, 94),
-//               ),
-//             ),
-//             children: const [
-//               ListTile(
-//                 title: TextField(
-//                   maxLines: null,
-//                   decoration: InputDecoration.collapsed(
-//                     hintText: '...',
-//                     hintStyle: TextStyle(
-//                       fontSize: 16,
-//                     ),
-//                   ),
-//                 ),
-//                 // title: Text(
-//                 //   'Day 1 - planting',
-//                 //   style: GoogleFonts.roboto(
-//                 //     fontSize: 14,
-//                 //   ),
-//                 // ),
-//               )
-//             ],
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }

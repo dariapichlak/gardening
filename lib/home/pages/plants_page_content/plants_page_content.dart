@@ -168,17 +168,18 @@ class PlantsPageContent extends StatelessWidget {
                                               Container(
                                                 width: 160,
                                                 height: 120,
-                                                decoration: const BoxDecoration(
+                                                decoration: BoxDecoration(
                                                   borderRadius:
-                                                      BorderRadius.only(
+                                                      const BorderRadius.only(
                                                     topLeft:
                                                         Radius.circular(25),
                                                     topRight:
                                                         Radius.circular(25),
                                                   ),
                                                   image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'images/plantimage.jpg'),
+                                                    image: NetworkImage(
+                                                      plantModel.imageUrl,
+                                                    ),
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
