@@ -98,41 +98,54 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(blurRadius: 15, offset: Offset(0, 10)),
+                          BoxShadow(
+                              blurRadius: 15,
+                              offset: Offset(0, -10),
+                              color: Color.fromARGB(255, 79, 110, 79)),
                         ],
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(35),
                           topRight: Radius.circular(35),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: SfCalendar(
-                          view: CalendarView.month,
-                          initialSelectedDate: DateTime.now(),
-                          cellBorderColor: Colors.transparent,
-                          showNavigationArrow: true,
-                          headerHeight: 70,
-                          headerStyle: const CalendarHeaderStyle(
-                            textAlign: TextAlign.center,
-                            textStyle: TextStyle(
-                                fontSize: 18,
-                                fontFamily: 'Antic',
-                                letterSpacing: 5,
-                                color: Color.fromARGB(255, 86, 133, 94),
-                                fontWeight: FontWeight.w400),
-                          ),
-                          todayHighlightColor:
-                              const Color.fromARGB(255, 86, 133, 94),
-                          selectionDecoration: BoxDecoration(
-                            color: Colors.transparent,
-                            border: Border.all(
-                              color: const Color.fromARGB(255, 86, 133, 94),
-                              width: 1.5,
+                      child: ListView(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Container(
+                              color: Colors.transparent,
+                              height: 350,
+                              child: SfCalendar(
+                                view: CalendarView.month,
+                                initialSelectedDate: DateTime.now(),
+                                cellBorderColor: Colors.transparent,
+                                showNavigationArrow: true,
+                                headerHeight: 70,
+                                headerStyle: const CalendarHeaderStyle(
+                                  textAlign: TextAlign.center,
+                                  textStyle: TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: 'Antic',
+                                      letterSpacing: 5,
+                                      color: Color.fromARGB(255, 86, 133, 94),
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                todayHighlightColor:
+                                    const Color.fromARGB(255, 86, 133, 94),
+                                todayTextStyle: const TextStyle(
+                                    fontWeight: FontWeight.w500),
+                                selectionDecoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  border: Border.all(
+                                    color: Colors.transparent,
+                                    width: 1.5,
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
                             ),
-                            shape: BoxShape.circle,
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),

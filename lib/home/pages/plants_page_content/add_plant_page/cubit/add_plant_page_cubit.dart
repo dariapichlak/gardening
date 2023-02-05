@@ -11,13 +11,11 @@ class AddPlantPageCubit extends Cubit<AddPlantPageState> {
   Future<void> add(
     String plantName,
     DateTime releaseDate,
-    String imageUrl,
   ) async {
     try {
       await _plantsRepository.add(
         plantName,
         releaseDate,
-        imageUrl,
       );
       emit(const AddPlantPageState(save: true));
     } catch (error) {

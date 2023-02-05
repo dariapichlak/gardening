@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -23,6 +24,21 @@ class Settings extends StatelessWidget {
             },
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: IconButton(
+              icon: const Icon(
+                Icons.logout_outlined,
+                color: Color.fromARGB(255, 172, 172, 172),
+              ),
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).pop();
+              },
+            ),
+          )
+        ],
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(0),
@@ -63,6 +79,11 @@ class Settings extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20.0, top: 30),
                   child: ListView(
                     children: [
+                      // ListTile(
+                      //   title:  Text('You are logged as ${user.email}'),
+                      //   leading: const Icon(Icons.language_outlined),
+                      //   onTap: () {},
+                      // ),
                       ListTile(
                         title: const Text('Language'),
                         leading: const Icon(Icons.language_outlined),

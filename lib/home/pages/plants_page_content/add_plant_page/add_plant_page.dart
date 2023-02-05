@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/pages/plants_page_content/add_plant_page/cubit/add_plant_page_cubit.dart';
 import 'package:gardening/repositories/plants_repository.dart';
@@ -20,7 +21,6 @@ class AddPlantPage extends StatefulWidget {
 }
 
 class _AddPlantPageState extends State<AddPlantPage> {
-  String? _imageUrl;
   String? _plantName;
   DateTime? _releaseDate;
 
@@ -73,15 +73,12 @@ class _AddPlantPageState extends State<AddPlantPage> {
                         Icons.save,
                         color: Colors.grey,
                       ),
-                      onPressed: _plantName == null ||
-                              _releaseDate == null ||
-                              _imageUrl == null
+                      onPressed: _plantName == null || _releaseDate == null
                           ? null
                           : () {
                               context.read<AddPlantPageCubit>().add(
                                     _plantName!,
                                     _releaseDate!,
-                                    _imageUrl!,
                                   );
                             },
                     ),
@@ -97,11 +94,6 @@ class _AddPlantPageState extends State<AddPlantPage> {
                 onDateChanged: (newValue) {
                   setState(() {
                     _releaseDate = newValue;
-                  });
-                },
-                onImageUrlChanged: (newValue) {
-                  setState(() {
-                    _imageUrl = newValue;
                   });
                 },
                 selectedDateFormatted: _releaseDate == null
@@ -121,13 +113,11 @@ class _AddPlantPageBody extends StatefulWidget {
     required this.onTitleChanged,
     required this.onDateChanged,
     required this.selectedDateFormatted,
-    required this.onImageUrlChanged,
     Key? key,
   }) : super(key: key);
   final Function(String) onTitleChanged;
   final Function(DateTime?) onDateChanged;
   final String? selectedDateFormatted;
-  final Function(String) onImageUrlChanged;
 
   @override
   State<_AddPlantPageBody> createState() => _AddPlantPageBodyState();
@@ -135,10 +125,40 @@ class _AddPlantPageBody extends StatefulWidget {
 
 class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
   File? file;
-  String imageUrl = '';
 
-  // CollectionReference reference =
-  //     FirebaseFirestore.instance.collection('plants');
+  Future pickImage(ImageSource source) async {
+    try {
+      final file = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (file == null) return;
+
+      final imageTemporary = File(file.path);
+
+      setState(() {
+        this.file = imageTemporary;
+        Navigator.of(context).pop();
+      });
+    } on PlatformException catch (error) {
+      print(error);
+      Navigator.of(context).pop();
+    }
+  }
+
+  Future pickImageC(ImageSource source) async {
+    try {
+      final file = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (file == null) return;
+
+      final imageTemporary = File(file.path);
+
+      setState(() {
+        this.file = imageTemporary;
+        Navigator.of(context).pop();
+      });
+    } on PlatformException catch (error) {
+      print(error);
+      Navigator.of(context).pop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -298,39 +318,8 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                           content: SingleChildScrollView(
                             child: ListBody(children: [
                               InkWell(
-                                onTap: () async {
-                                  widget.onImageUrlChanged;
-                                  ImagePicker imagePicker = ImagePicker();
-                                  XFile? file = await imagePicker.pickImage(
-                                      source: ImageSource.gallery);
-                                  // print('${file?.path}');
-                                  if (file == null) return;
-
-                                  final imageTemp = File(file.path);
-
-                                  setState(() {
-                                    this.file = imageTemp;
-                                  });
-
-                                  String fileName = DateTime.now()
-                                      .microsecondsSinceEpoch
-                                      .toString();
-
-                                  Reference referenceRoot =
-                                      FirebaseStorage.instance.ref();
-                                  Reference referenceDirImages =
-                                      referenceRoot.child('images');
-                                  Reference referenceImageToUpload =
-                                      referenceDirImages.child(fileName);
-                                  try {
-                                    await referenceImageToUpload
-                                        .putFile(File(file.path));
-
-                                    imageUrl = await referenceImageToUpload
-                                        .getDownloadURL();
-                                  } catch (error) {
-                                    throw ('Error: $error');
-                                  }
+                                onTap: () {
+                                  pickImage(ImageSource.gallery);
                                 },
                                 splashColor: Colors.green,
                                 child: Row(
@@ -346,39 +335,8 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                               ),
                               const SizedBox(height: 15),
                               InkWell(
-                                onTap: () async {
-                                  widget.onImageUrlChanged;
-                                  ImagePicker imagePicker = ImagePicker();
-                                  XFile? file = await imagePicker.pickImage(
-                                      source: ImageSource.camera);
-                                  // print('${file?.path}');
-                                  if (file == null) return;
-
-                                  final imageTemp = File(file.path);
-
-                                  setState(() {
-                                    this.file = imageTemp;
-                                  });
-
-                                  String fileName = DateTime.now()
-                                      .microsecondsSinceEpoch
-                                      .toString();
-
-                                  Reference referenceRoot =
-                                      FirebaseStorage.instance.ref();
-                                  Reference referenceDirImages =
-                                      referenceRoot.child('images');
-                                  Reference referenceImageToUpload =
-                                      referenceDirImages.child(fileName);
-                                  try {
-                                    await referenceImageToUpload
-                                        .putFile(File(file.path));
-
-                                    imageUrl = await referenceImageToUpload
-                                        .getDownloadURL();
-                                  } catch (error) {
-                                    throw ('Error: $error');
-                                  }
+                                onTap: () {
+                                  pickImageC(ImageSource.camera);
                                 },
                                 splashColor: Colors.green,
                                 child: Row(

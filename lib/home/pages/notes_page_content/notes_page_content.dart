@@ -20,7 +20,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 242, 242, 242),
+      backgroundColor: const Color.fromARGB(255, 254, 254, 254),
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -40,7 +40,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
                 bottomLeft: Radius.circular(0),
                 bottomRight: Radius.circular(0))),
         elevation: 0,
-        backgroundColor: const Color.fromARGB(255, 242, 242, 242),
+        backgroundColor: const Color.fromARGB(255, 254, 254, 254),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),

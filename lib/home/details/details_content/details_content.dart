@@ -184,9 +184,9 @@ class DetailsContent extends StatelessWidget {
                             color: Colors.grey),
                       ],
                     ),
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 130.0,
-                      backgroundImage: AssetImage('images/plantimage.jpg'),
+                      backgroundImage: NetworkImage(plantModel.imageURL),
                     ),
                   ),
                 ),

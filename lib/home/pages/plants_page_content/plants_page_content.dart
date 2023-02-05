@@ -178,7 +178,7 @@ class PlantsPageContent extends StatelessWidget {
                                                   ),
                                                   image: DecorationImage(
                                                     image: NetworkImage(
-                                                      plantModel.imageUrl,
+                                                      plantModel.imageURL,
                                                     ),
                                                     fit: BoxFit.cover,
                                                   ),
