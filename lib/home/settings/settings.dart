@@ -79,11 +79,6 @@ class Settings extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20.0, top: 30),
                   child: ListView(
                     children: [
-                      // ListTile(
-                      //   title:  Text('You are logged as ${user.email}'),
-                      //   leading: const Icon(Icons.language_outlined),
-                      //   onTap: () {},
-                      // ),
                       ListTile(
                         title: const Text('Language'),
                         leading: const Icon(Icons.language_outlined),
@@ -97,7 +92,9 @@ class Settings extends StatelessWidget {
                       ListTile(
                         title: const Text('Delete all data / Reset App'),
                         leading: const Icon(Icons.delete_forever),
-                        onTap: () {},
+                        onTap: () {
+                          
+                        },
                       ),
                       ListTile(
                         title: const Text('Privace Policy'),

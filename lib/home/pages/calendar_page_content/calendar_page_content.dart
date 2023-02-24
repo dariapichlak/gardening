@@ -41,14 +41,14 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
         builder: (context, state) {
           final weatherModel = state.model;
           return Scaffold(
-            backgroundColor: const Color.fromARGB(255, 86, 133, 94),
+            backgroundColor: const Color.fromARGB(255, 254, 254, 254),
             appBar: AppBar(
               leading: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: IconButton(
                   icon: const Icon(
                     Icons.settings,
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 172, 172, 172),
                   ),
                   onPressed: () {
                     Navigator.of(context).push(
@@ -63,29 +63,57 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
                 ),
               ),
               elevation: 0,
-              backgroundColor: const Color.fromARGB(255, 86, 133, 94),
+              backgroundColor: const Color.fromARGB(255, 254, 254, 254),
             ),
             body: Padding(
               padding: const EdgeInsets.only(top: 0.0),
               child: Column(
                 children: [
                   Container(
-                    width: 240,
+                    width: 340,
                     height: 240,
                     decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 86, 133, 94),
-                      borderRadius: BorderRadius.all(Radius.circular(140)),
+                      color: Colors.transparent,
                     ),
                     child: Builder(builder: (context) {
                       if (state.status == Status.loading) {
                         return const Text('Weather is loading');
                       }
                       return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          if (weatherModel != null)
-                            _DisplayWeatherWidget(weatherModel: weatherModel),
-                          _SearchWeather(),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Builder(
+                            builder: (context) {
+                              if (weatherModel != null) {
+                                return Column(
+                                  children: [
+                                    _SearchWeather(),
+                                    const SizedBox(
+                                      height: 33,
+                                    ),
+                                    _DisplayWeatherWidget(
+                                        weatherModel: weatherModel),
+                                  ],
+                                );
+                              }
+                              return Column(
+                                children: [
+                                  _SearchWeather(),
+                                  const SizedBox(
+                                    height: 35,
+                                  ),
+                                  const CircleAvatar(
+                                    radius: 70,
+                                    backgroundColor: Colors.transparent,
+                                    backgroundImage:
+                                        AssetImage('images/sun2.png'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         ],
                       );
                     }),
@@ -96,12 +124,12 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
                   Expanded(
                     child: Container(
                       decoration: const BoxDecoration(
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 254, 254, 254),
                         boxShadow: [
                           BoxShadow(
-                              blurRadius: 15,
-                              offset: Offset(0, -10),
-                              color: Color.fromARGB(255, 79, 110, 79)),
+                              blurRadius: 25,
+                              offset: Offset(0, 10),
+                              color: Color.fromARGB(255, 75, 75, 75)),
                         ],
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(35),
@@ -172,24 +200,25 @@ class _DisplayWeatherWidget extends StatelessWidget {
     return BlocBuilder<CalendarPageContentCubit, CalendarPageContentState>(
       builder: (context, state) {
         return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               weatherModel.city,
-              style: GoogleFonts.roboto(fontSize: 18, color: Colors.white),
+              style: GoogleFonts.roboto(fontSize: 18, color: Colors.green),
             ),
             const SizedBox(
               height: 5,
             ),
             Text(
               '${weatherModel.temperature} °C',
-              style: GoogleFonts.roboto(fontSize: 60, color: Colors.white),
+              style: GoogleFonts.roboto(fontSize: 60, color: Colors.green),
             ),
             const SizedBox(
               height: 5,
             ),
             Text(
               weatherModel.condition,
-              style: GoogleFonts.roboto(fontSize: 18, color: Colors.white),
+              style: GoogleFonts.roboto(fontSize: 18, color: Colors.green),
             ),
             const SizedBox(
               height: 10,
@@ -212,26 +241,41 @@ class _SearchWeather extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
+        Container(
+          width: 340,
+          height: 50,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey,
+                  blurRadius: 9,
+                  spreadRadius: 0.5,
+                  offset: Offset(0, 3)),
+            ],
+          ),
           child: TextField(
             controller: _controller,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              label: Text('City'),
-              hintText: 'City',
+            textAlign: TextAlign.left,
+            decoration: InputDecoration(
+              hintText: 'Find weather for city...',
+              border: InputBorder.none,
+              icon: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: IconButton(
+                  icon: const Icon(Icons.search),
+                  color: Colors.grey,
+                  onPressed: () {
+                    context
+                        .read<CalendarPageContentCubit>()
+                        .getWeatherModel(city: _controller.text);
+                  },
+                ),
+              ),
             ),
           ),
         ),
-        const SizedBox(
-          width: 20,
-        ),
-        ElevatedButton(
-            onPressed: () {
-              context
-                  .read<CalendarPageContentCubit>()
-                  .getWeatherModel(city: _controller.text);
-            },
-            child: const Text('Get'))
       ],
     );
   }

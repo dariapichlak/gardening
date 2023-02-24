@@ -208,8 +208,6 @@ class PlantsPageContent extends StatelessWidget {
                                                             .daysToWatering(),
                                                         style: const TextStyle(
                                                           fontSize: 16,
-                                                          // fontWeight:
-                                                          //     FontWeight.bold,
                                                         ),
                                                       ),
                                                     ),

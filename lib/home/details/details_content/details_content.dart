@@ -5,70 +5,80 @@ import 'package:gardening/home/details/cubit/details_cubit.dart';
 import 'package:gardening/repositories/plants_repository.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class DetailsContent extends StatelessWidget {
+class DetailsContent extends StatefulWidget {
   const DetailsContent({
     required this.id,
     Key? key,
   }) : super(key: key);
-
   final String id;
 
   @override
+  State<DetailsContent> createState() => _DetailsContentState();
+}
+
+class _DetailsContentState extends State<DetailsContent> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 242, 242, 242),
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.grey,
+    return BlocProvider(
+      create: (context) =>
+          DetailsCubit(PlantsRepository())..getPlantWithID(widget.id),
+      child: BlocBuilder<DetailsCubit, DetailsState>(builder: (context, state) {
+        if (state.errorMessage.isNotEmpty) {
+          return const Center(child: Text('Error'));
+        }
+        if (state.isLoading) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Color.fromARGB(255, 86, 133, 94),
             ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(0),
-                bottomRight: Radius.circular(0))),
-        elevation: 0,
-        backgroundColor: const Color.fromARGB(255, 242, 242, 242),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: IconButton(
-              icon: const Icon(
-                Icons.more_horiz,
-                color: Colors.grey,
+          );
+        }
+        final plantModel = state.plantModel;
+        if (plantModel == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return Scaffold(
+          backgroundColor: const Color.fromARGB(255, 242, 242, 242),
+          appBar: AppBar(
+            leading: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
-              onPressed: () {},
             ),
-          ),
-        ],
-      ),
-      body: BlocProvider(
-        create: (context) =>
-            DetailsCubit(PlantsRepository())..getPlantWithID(id),
-        child:
-            BlocBuilder<DetailsCubit, DetailsState>(builder: (context, state) {
-          if (state.errorMessage.isNotEmpty) {
-            return const Center(child: Text('Error'));
-          }
-          if (state.isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Color.fromARGB(255, 86, 133, 94),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(0),
+                    bottomRight: Radius.circular(0))),
+            elevation: 0,
+            backgroundColor: const Color.fromARGB(255, 242, 242, 242),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.grey,
+                  ),
+                  onPressed: () {
+                    context
+                        .read<DetailsCubit>()
+                        .remove(documentID: plantModel.id);
+
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
-            );
-          }
-          final plantModel = state.plantModel;
-          if (plantModel == null) {
-            return const Center(child: Text('Empty'));
-          }
-          return Center(
+            ],
+          ),
+          body: Center(
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -192,127 +202,9 @@ class DetailsContent extends StatelessWidget {
                 ),
               ],
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 }
-
-
-
-
-//           Padding(
-//             padding: const EdgeInsets.only(
-//               left: 20.0,
-//               bottom: 20,
-//               top: 20,
-//             ),
-//             child: ListView(
-//               children: [
-//                 Container(
-//                   height: 125,
-//                   padding: const EdgeInsets.only(
-//                     left: 12,
-//                     bottom: 12,
-//                     top: 12,
-//                   ),
-//                   margin: const EdgeInsets.symmetric(
-//                     horizontal: 5,
-//                     vertical: 10,
-//                   ),
-//                   decoration: const BoxDecoration(
-//                     borderRadius: BorderRadius.only(
-//                       topLeft: Radius.circular(70),
-//                       bottomLeft: Radius.circular(70),
-//                     ),
-//                     color: Color.fromARGB(255, 223, 224, 216),
-//                     boxShadow: [
-//                       BoxShadow(
-//                           color: Color.fromARGB(255, 203, 203, 203),
-//                           blurRadius: 5,
-//                           spreadRadius: 1,
-//                           offset: Offset(0, 5)),
-//                     ],
-//                   ),
-//                   child: Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: [
-//                       const CircleAvatar(
-//                         backgroundImage: AssetImage('images/plant1.jpg'),
-//                         radius: 50,
-//                       ),
-//                       Column(
-//                         mainAxisAlignment: MainAxisAlignment.center,
-//                         children: [
-//                           Text(plantModel.plantName),
-//                           const SizedBox(
-//                             height: 12,
-//                           ),
-//                           Row(
-//                             children: [
-//                               const Icon(Icons.water_drop_outlined),
-//                               const Text(
-//                                 '  ',
-//                               ),
-//                               Text(
-//                                 plantModel.daysToWatering(),
-//                                 style: const TextStyle(
-//                                   fontSize: 10,
-//                                   fontWeight: FontWeight.bold,
-//                                 ),
-//                               ),
-//                               const Text(
-//                                 ' days to watering',
-//                                 style: TextStyle(
-//                                   fontSize: 10,
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                           Text(
-//                             plantModel.relaseDateFormatted(),
-//                             style: const TextStyle(
-//                               fontSize: 10,
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                       Column(
-//                         children: const [Text('')],
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           );
-//         }),
-//       ),
-//     );
-//   }
-// }
-
-
- //   elevation: 5,
-        //   shape: const RoundedRectangleBorder(
-        //       borderRadius: BorderRadius.only(
-        //           bottomLeft: Radius.circular(35),
-        //           bottomRight: Radius.circular(35))),
-        //   backgroundColor: const Color.fromARGB(255, 86, 133, 94),
-        //   actions: [
-        //     Padding(
-        //       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        //       child: IconButton(
-        //         icon: const Icon(Icons.add),
-        //         onPressed: () {
-        //           Navigator.of(context).push(MaterialPageRoute(
-        //             builder: (_) => const AddPlantPage(),
-        //             fullscreenDialog: true,
-        //           ));
-        //         },
-        //       ),
-        //     ),
-        //   ],
-        // ),

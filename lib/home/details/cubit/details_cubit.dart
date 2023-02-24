@@ -22,4 +22,18 @@ class DetailsCubit extends Cubit<DetailsState> {
       isLoading: false,
     ));
   }
+
+  Future<void> remove({required String documentID}) async {
+    try {
+      await _plantsRepository.delete(id: documentID);
+    } catch (error) {
+      emit(
+        DetailsState(
+          errorMessage: error.toString(),
+          isLoading: false,
+          plantModel: null,
+        ),
+      );
+    }
+  }
 }

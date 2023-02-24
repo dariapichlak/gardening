@@ -61,8 +61,10 @@ class PlantsRepository {
   Future<void> add(
     String plantName,
     DateTime releaseDate,
+    String imageURL,
   ) async {
     final userID = FirebaseAuth.instance.currentUser?.uid;
+
     if (userID == null) {
       throw Exception('User is not logged in');
     }
@@ -73,6 +75,7 @@ class PlantsRepository {
         .add({
       'plantName': plantName,
       'releaseDate': releaseDate,
+      'imageURL': imageURL,
     });
   }
 }

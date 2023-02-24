@@ -23,6 +23,7 @@ class AddPlantPage extends StatefulWidget {
 class _AddPlantPageState extends State<AddPlantPage> {
   String? _plantName;
   DateTime? _releaseDate;
+  String? _imageURL;
 
   @override
   Widget build(BuildContext context) {
@@ -73,19 +74,29 @@ class _AddPlantPageState extends State<AddPlantPage> {
                         Icons.save,
                         color: Colors.grey,
                       ),
-                      onPressed: _plantName == null || _releaseDate == null
+                      onPressed: 
+                       _plantName == null ||
+                              _releaseDate == null ||
+                              _imageURL == null
                           ? null
-                          : () {
+                          : () async {
                               context.read<AddPlantPageCubit>().add(
                                     _plantName!,
                                     _releaseDate!,
+                                    _imageURL!,
                                   );
                             },
+                            
                     ),
                   ),
                 ],
               ),
               body: _AddPlantPageBody(
+                onImageURLChanged: (newValue) {
+                  setState(() {
+                    _imageURL = newValue;
+                  });
+                },
                 onTitleChanged: (newValue) {
                   setState(() {
                     _plantName = newValue;
@@ -113,11 +124,13 @@ class _AddPlantPageBody extends StatefulWidget {
     required this.onTitleChanged,
     required this.onDateChanged,
     required this.selectedDateFormatted,
+    required this.onImageURLChanged,
     Key? key,
   }) : super(key: key);
   final Function(String) onTitleChanged;
   final Function(DateTime?) onDateChanged;
   final String? selectedDateFormatted;
+  final Function(String) onImageURLChanged;
 
   @override
   State<_AddPlantPageBody> createState() => _AddPlantPageBodyState();
@@ -125,6 +138,7 @@ class _AddPlantPageBody extends StatefulWidget {
 
 class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
   File? file;
+  String imageURL = '';
 
   Future pickImage(ImageSource source) async {
     try {
@@ -140,6 +154,19 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
     } on PlatformException catch (error) {
       print(error);
       Navigator.of(context).pop();
+    }
+
+    String uniqueNameFile = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirectionImage = referenceRoot.child('imageURL');
+    Reference referenceImageToUpload =
+        referenceDirectionImage.child(uniqueNameFile);
+
+    try {
+      await referenceImageToUpload.putFile(File(file!.path));
+      imageURL = await referenceImageToUpload.getDownloadURL();
+    } catch (error) {
+      print(error);
     }
   }
 
@@ -157,6 +184,19 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
     } on PlatformException catch (error) {
       print(error);
       Navigator.of(context).pop();
+    }
+
+    String uniqueNameFile = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirectionImage = referenceRoot.child('imageURL');
+    Reference referenceImageToUpload =
+        referenceDirectionImage.child(uniqueNameFile);
+
+    try {
+      await referenceImageToUpload.putFile(File(file!.path));
+      imageURL = await referenceImageToUpload.getDownloadURL();
+    } catch (error) {
+      print(error);
     }
   }
 
