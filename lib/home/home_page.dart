@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
             child: NotesPageContent(),
           );
         }
-        return const PlantsPageContent();
+        return PlantsPageContent();
       }),
       bottomNavigationBar: Theme(
         data: Theme.of(context)

@@ -74,8 +74,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
                         Icons.save,
                         color: Colors.grey,
                       ),
-                      onPressed: 
-                       _plantName == null ||
+                      onPressed: _plantName == null ||
                               _releaseDate == null ||
                               _imageURL == null
                           ? null
@@ -86,7 +85,6 @@ class _AddPlantPageState extends State<AddPlantPage> {
                                     _imageURL!,
                                   );
                             },
-                            
                     ),
                   ),
                 ],
@@ -161,6 +159,7 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
     Reference referenceDirectionImage = referenceRoot.child('imageURL');
     Reference referenceImageToUpload =
         referenceDirectionImage.child(uniqueNameFile);
+        
 
     try {
       await referenceImageToUpload.putFile(File(file!.path));
@@ -238,13 +237,8 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                     const SizedBox(
                       height: 70,
                     ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 113, 169, 122),
-                        ),
-                      ),
-                      onPressed: () async {
+                    InkWell(
+                      onTap: () async {
                         final selectedDate = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
@@ -255,24 +249,38 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                         );
                         widget.onDateChanged(selectedDate);
                       },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Icon(
-                            Icons.water_drop_outlined,
-                            color: Colors.white,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  spreadRadius: 0.1,
+                                  blurRadius: 7,
+                                  offset: Offset(0, 3.5),
+                                  color: Colors.grey),
+                            ],
+                            color: Color.fromARGB(255, 242, 242, 242),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        height: 50,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Icon(
+                                Icons.calendar_month_outlined,
+                                color: Color.fromARGB(255, 86, 134, 87),
+                              ),
+                              Text(
+                                'Next Watering',
+                              ),
+                              Icon(
+                                Icons.water_drop_outlined,
+                                color: Color.fromARGB(255, 86, 134, 87),
+                              ),
+                            ],
                           ),
-                          Text(
-                            widget.selectedDateFormatted ?? 'When watering?',
-                            style: const TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                          const Icon(
-                            Icons.calendar_month_outlined,
-                            color: Colors.white,
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                     const SizedBox(

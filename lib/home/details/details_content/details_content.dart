@@ -114,38 +114,41 @@ class _DetailsContentState extends State<DetailsContent> {
                           const SizedBox(
                             height: 70,
                           ),
-                          Container(
-                            decoration: const BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                      spreadRadius: 0.1,
-                                      blurRadius: 7,
-                                      offset: Offset(0, 3.5),
-                                      color: Colors.grey),
-                                ],
-                                color: Color.fromARGB(255, 242, 242, 242),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                            height: 50,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Icon(
-                                    Icons.calendar_month_outlined,
-                                    color: Color.fromARGB(255, 86, 134, 87),
-                                  ),
-                                  Text(
-                                    'Next Watering',
-                                  ),
-                                  Icon(
-                                    Icons.water_drop_outlined,
-                                    color: Color.fromARGB(255, 86, 134, 87),
-                                  ),
-                                ],
+                          InkWell(
+                            onTap: () {},
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                        spreadRadius: 0.1,
+                                        blurRadius: 7,
+                                        offset: Offset(0, 3.5),
+                                        color: Colors.grey),
+                                  ],
+                                  color: Color.fromARGB(255, 242, 242, 242),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              height: 50,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: const [
+                                    Icon(
+                                      Icons.calendar_month_outlined,
+                                      color: Color.fromARGB(255, 86, 134, 87),
+                                    ),
+                                    Text(
+                                      'Next Watering',
+                                    ),
+                                    Icon(
+                                      Icons.water_drop_outlined,
+                                      color: Color.fromARGB(255, 86, 134, 87),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

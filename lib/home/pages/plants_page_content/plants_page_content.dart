@@ -12,8 +12,18 @@ class PlantsPageContent extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  // ???
+
   @override
   Widget build(BuildContext context) {
+    // Color getColor() {
+    //   if (??? < 1) {
+    //     return Color.fromARGB(255, 255, 138, 130);
+    //   } else {
+    //     return Color.fromARGB(255, 103, 159, 105);
+    //   }
+    // }
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 254, 254, 254),
       appBar: AppBar(
@@ -26,8 +36,10 @@ class PlantsPageContent extends StatelessWidget {
               color: Color.fromARGB(255, 172, 172, 172),
             ),
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => const Settings()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const Settings(
+                        id: '',
+                      )));
             },
           ),
         ),
@@ -87,35 +99,6 @@ class PlantsPageContent extends StatelessWidget {
                   ),
                   const SizedBox(
                     height: 20,
-                  ),
-                  Container(
-                    width: 340,
-                    height: 50,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Color.fromARGB(255, 203, 203, 203),
-                            blurRadius: 9,
-                            spreadRadius: 0.5,
-                            offset: Offset(0, 3)),
-                      ],
-                    ),
-                    child: const TextField(
-                      textAlign: TextAlign.left,
-                      decoration: InputDecoration(
-                        hintText: 'Search...',
-                        border: InputBorder.none,
-                        icon: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Icon(
-                            Icons.search,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                    ),
                   ),
                   Expanded(
                     child: Padding(
@@ -198,7 +181,8 @@ class PlantsPageContent extends StatelessWidget {
                                                               Radius.circular(
                                                                   50)),
                                                       color: Color.fromARGB(
-                                                          255, 142, 180, 143),
+                                                          255, 135, 191, 144),
+                                                      // getColor(),
                                                     ),
                                                     width: 32,
                                                     height: 32,

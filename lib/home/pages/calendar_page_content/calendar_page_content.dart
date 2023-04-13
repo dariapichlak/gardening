@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/core/enum.dart';
 import 'package:gardening/data/remote_data_sources/weather_remote_data_source.dart';
 import 'package:gardening/home/pages/calendar_page_content/cubit/calendar_page_content_cubit.dart';
+import 'package:gardening/home/pages/testing_page.dart';
 import 'package:gardening/home/settings/settings.dart';
 import 'package:gardening/models/weather_model.dart';
 import 'package:gardening/repositories/weather_repository.dart';
@@ -40,144 +41,151 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
         },
         builder: (context, state) {
           final weatherModel = state.model;
-          return Scaffold(
-            backgroundColor: const Color.fromARGB(255, 254, 254, 254),
-            appBar: AppBar(
-              leading: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.settings,
-                    color: Color.fromARGB(255, 172, 172, 172),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const Settings()));
-                  },
-                ),
-              ),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(0),
-                  bottomRight: Radius.circular(0),
-                ),
-              ),
-              elevation: 0,
-              backgroundColor: const Color.fromARGB(255, 254, 254, 254),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.only(top: 0.0),
-              child: Column(
-                children: [
-                  Container(
-                    width: 340,
-                    height: 240,
-                    decoration: const BoxDecoration(
-                      color: Colors.transparent,
+          return Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage('images/weatherimage.jpg'),
+              fit: BoxFit.cover,
+            )),
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                leading: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.settings,
+                      color: Color.fromARGB(255, 172, 172, 172),
                     ),
-                    child: Builder(builder: (context) {
-                      if (state.status == Status.loading) {
-                        return const Text('Weather is loading');
-                      }
-                      return Column(
-                        children: [
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Builder(
-                            builder: (context) {
-                              if (weatherModel != null) {
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => const Settings(
+                          id: '',
+                        ),
+                      ));
+                    },
+                  ),
+                ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(0),
+                    bottomRight: Radius.circular(0),
+                  ),
+                ),
+                elevation: 0,
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240),
+              ),
+              body: Padding(
+                padding: const EdgeInsets.only(top: 0.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      width: 340,
+                      height: 240,
+                      decoration: const BoxDecoration(
+                        color: Colors.transparent,
+                      ),
+                      child: Builder(builder: (context) {
+                        if (state.status == Status.loading) {
+                          return const CircularProgressIndicator(
+                            color: Color.fromARGB(255, 86, 133, 94),
+                          );
+                        }
+                        return Column(
+                          children: [
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Builder(
+                              builder: (context) {
+                                if (weatherModel != null) {
+                                  return Column(
+                                    children: [
+                                      _SearchWeather(),
+                                      const SizedBox(
+                                        height: 33,
+                                      ),
+                                      _DisplayWeatherWidget(
+                                          weatherModel: weatherModel),
+                                    ],
+                                  );
+                                }
                                 return Column(
                                   children: [
                                     _SearchWeather(),
                                     const SizedBox(
-                                      height: 33,
+                                      height: 35,
                                     ),
-                                    _DisplayWeatherWidget(
-                                        weatherModel: weatherModel),
                                   ],
                                 );
-                              }
-                              return Column(
-                                children: [
-                                  _SearchWeather(),
-                                  const SizedBox(
-                                    height: 35,
-                                  ),
-                                  const CircleAvatar(
-                                    radius: 70,
-                                    backgroundColor: Colors.transparent,
-                                    backgroundImage:
-                                        AssetImage('images/sun2.png'),
-                                  ),
-                                ],
-                              );
-                            },
+                              },
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 254, 254, 254),
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 25,
+                                offset: Offset(0, 10),
+                                color: Color.fromARGB(255, 75, 75, 75)),
+                          ],
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(35),
+                            topRight: Radius.circular(35),
                           ),
-                        ],
-                      );
-                    }),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 254, 254, 254),
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 25,
-                              offset: Offset(0, 10),
-                              color: Color.fromARGB(255, 75, 75, 75)),
-                        ],
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(35),
-                          topRight: Radius.circular(35),
                         ),
-                      ),
-                      child: ListView(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Container(
-                              color: Colors.transparent,
-                              height: 350,
-                              child: SfCalendar(
-                                view: CalendarView.month,
-                                initialSelectedDate: DateTime.now(),
-                                cellBorderColor: Colors.transparent,
-                                showNavigationArrow: true,
-                                headerHeight: 70,
-                                headerStyle: const CalendarHeaderStyle(
-                                  textAlign: TextAlign.center,
-                                  textStyle: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: 'Antic',
-                                      letterSpacing: 5,
-                                      color: Color.fromARGB(255, 86, 133, 94),
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                todayHighlightColor:
-                                    const Color.fromARGB(255, 86, 133, 94),
-                                todayTextStyle: const TextStyle(
-                                    fontWeight: FontWeight.w500),
-                                selectionDecoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  border: Border.all(
-                                    color: Colors.transparent,
-                                    width: 1.5,
+                        child: ListView(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                color: Colors.transparent,
+                                height: 350,
+                                child: SfCalendar(
+                                  view: CalendarView.month,
+                                  initialSelectedDate: DateTime.now(),
+                                  cellBorderColor: Colors.transparent,
+                                  showNavigationArrow: true,
+                                  headerHeight: 70,
+                                  headerStyle: const CalendarHeaderStyle(
+                                    textAlign: TextAlign.center,
+                                    textStyle: TextStyle(
+                                        fontSize: 18,
+                                        fontFamily: 'Antic',
+                                        letterSpacing: 5,
+                                        color: Color.fromARGB(255, 86, 133, 94),
+                                        fontWeight: FontWeight.w400),
                                   ),
-                                  shape: BoxShape.circle,
+                                  todayHighlightColor:
+                                      const Color.fromARGB(255, 86, 133, 94),
+                                  todayTextStyle: const TextStyle(
+                                      fontWeight: FontWeight.w500),
+                                  selectionDecoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    border: Border.all(
+                                      color: Colors.transparent,
+                                      width: 1.5,
+                                    ),
+                                    shape: BoxShape.circle,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
@@ -204,21 +212,21 @@ class _DisplayWeatherWidget extends StatelessWidget {
           children: [
             Text(
               weatherModel.city,
-              style: GoogleFonts.roboto(fontSize: 18, color: Colors.green),
+              style: GoogleFonts.roboto(fontSize: 18, color: Colors.black),
             ),
             const SizedBox(
               height: 5,
             ),
             Text(
               '${weatherModel.temperature} °C',
-              style: GoogleFonts.roboto(fontSize: 60, color: Colors.green),
+              style: GoogleFonts.roboto(fontSize: 60, color: Colors.black),
             ),
             const SizedBox(
               height: 5,
             ),
             Text(
               weatherModel.condition,
-              style: GoogleFonts.roboto(fontSize: 18, color: Colors.green),
+              style: GoogleFonts.roboto(fontSize: 20, color: Colors.black),
             ),
             const SizedBox(
               height: 10,
@@ -259,7 +267,7 @@ class _SearchWeather extends StatelessWidget {
             controller: _controller,
             textAlign: TextAlign.left,
             decoration: InputDecoration(
-              hintText: 'Find weather for city...',
+              hintText: 'Search weather for city...',
               border: InputBorder.none,
               icon: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),

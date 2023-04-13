@@ -30,8 +30,10 @@ class _NotesPageContentState extends State<NotesPageContent> {
               color: Color.fromARGB(255, 172, 172, 172),
             ),
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => const Settings()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const Settings(
+                        id: '',
+                      )));
             },
           ),
         ),
@@ -46,7 +48,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: IconButton(
               icon: const Icon(
-                Icons.notes,
+                Icons.edit,
                 color: Color.fromARGB(255, 86, 133, 94),
               ),
               onPressed: () {

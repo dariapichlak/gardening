@@ -9,3 +9,4 @@ class NoteModel {
   final bool value;
   final String id;
 }
+
