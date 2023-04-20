@@ -144,7 +144,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
                                       ),
                                       child: CheckboxListTile(
                                         activeColor: const Color.fromARGB(
-                                            255, 100, 200, 100),
+                                            255, 86, 133, 94),
                                         controlAffinity:
                                             ListTileControlAffinity.leading,
                                         title: Text(

@@ -18,6 +18,9 @@ class PlantsRepository {
       return querySnapshot.docs.map((document) {
         return PlantModel(
           plantName: document['plantName'],
+          temp: document['temp'],
+          sun: document['sun'],
+          water: document['water'],
           id: document.id,
           releaseDate: (document['releaseDate'] as Timestamp).toDate(),
           imageURL: document['imageURL'],
@@ -52,6 +55,9 @@ class PlantsRepository {
         .get();
     return PlantModel(
       plantName: document['plantName'],
+      temp: document['temp'],
+      sun: document['sun'],
+      water: document['water'],
       id: document.id,
       releaseDate: (document['releaseDate'] as Timestamp).toDate(),
       imageURL: document['imageURL'],
@@ -60,6 +66,9 @@ class PlantsRepository {
 
   Future<void> add(
     String plantName,
+    String temp,
+    String sun,
+    String water,
     DateTime releaseDate,
     String imageURL,
   ) async {
@@ -74,6 +83,9 @@ class PlantsRepository {
         .collection('plants')
         .add({
       'plantName': plantName,
+      'temp': temp,
+      'sun': sun,
+      'water': water,
       'releaseDate': releaseDate,
       'imageURL': imageURL,
     });

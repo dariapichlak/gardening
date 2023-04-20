@@ -12,12 +12,18 @@ class AddPlantPageCubit extends Cubit<AddPlantPageState> {
 
   Future<void> add(
     String plantName,
+    String temp,
+    String sun,
+    String water,
     DateTime releaseDate,
     String imageURL,
   ) async {
     try {
       await _plantsRepository.add(
         plantName,
+        temp,
+        sun,
+        water,
         releaseDate,
         imageURL,
       );
@@ -26,6 +32,4 @@ class AddPlantPageCubit extends Cubit<AddPlantPageState> {
       emit(AddPlantPageState(errorMessage: error.toString()));
     }
   }
-
-  
 }

@@ -108,8 +108,32 @@ class _DetailsContentState extends State<DetailsContent> {
                           const SizedBox(
                             height: 20,
                           ),
-                          const Text(
-                            'Description of a plant',
+                           Text(
+                            plantModel.temp,
+                            style: GoogleFonts.antic(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                           const SizedBox(
+                            height: 20,
+                          ),
+                           Text(
+                            plantModel.sun,
+                            style: GoogleFonts.antic(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                           const SizedBox(
+                            height: 20,
+                          ),
+                           Text(
+                            plantModel.water,
+                            style: GoogleFonts.antic(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                           const SizedBox(
                             height: 70,

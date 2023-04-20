@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +23,9 @@ class _AddPlantPageState extends State<AddPlantPage> {
   String? _plantName;
   DateTime? _releaseDate;
   String? _imageURL;
+  String? _temp;
+  String? _sun;
+  String? _water;
 
   @override
   Widget build(BuildContext context) {
@@ -75,12 +77,18 @@ class _AddPlantPageState extends State<AddPlantPage> {
                         color: Colors.grey,
                       ),
                       onPressed: _plantName == null ||
+                              _temp == null ||
+                              _sun == null ||
+                              _water == null ||
                               _releaseDate == null ||
                               _imageURL == null
                           ? null
                           : () async {
                               context.read<AddPlantPageCubit>().add(
                                     _plantName!,
+                                    _temp!,
+                                    _sun!,
+                                    _water!,
                                     _releaseDate!,
                                     _imageURL!,
                                   );
@@ -98,6 +106,21 @@ class _AddPlantPageState extends State<AddPlantPage> {
                 onTitleChanged: (newValue) {
                   setState(() {
                     _plantName = newValue;
+                  });
+                },
+                onTempChanged: (newValue) {
+                  setState(() {
+                    _temp = newValue;
+                  });
+                },
+                onSunChanged: (newValue) {
+                  setState(() {
+                    _sun = newValue;
+                  });
+                },
+                onWaterChanged: (newValue) {
+                  setState(() {
+                    _water = newValue;
                   });
                 },
                 onDateChanged: (newValue) {
@@ -123,9 +146,15 @@ class _AddPlantPageBody extends StatefulWidget {
     required this.onDateChanged,
     required this.selectedDateFormatted,
     required this.onImageURLChanged,
+    required this.onTempChanged,
+    required this.onSunChanged,
+    required this.onWaterChanged,
     Key? key,
   }) : super(key: key);
   final Function(String) onTitleChanged;
+  final Function(String) onTempChanged;
+  final Function(String) onSunChanged;
+  final Function(String) onWaterChanged;
   final Function(DateTime?) onDateChanged;
   final String? selectedDateFormatted;
   final Function(String) onImageURLChanged;
@@ -159,7 +188,6 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
     Reference referenceDirectionImage = referenceRoot.child('imageURL');
     Reference referenceImageToUpload =
         referenceDirectionImage.child(uniqueNameFile);
-        
 
     try {
       await referenceImageToUpload.putFile(File(file!.path));
@@ -215,27 +243,63 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
               ], color: Colors.white, borderRadius: BorderRadius.circular(35)),
               child: Padding(
                 padding: const EdgeInsets.only(top: 100.0, left: 40, right: 40),
-                child: ListView(
+                child: Column(
                   children: [
                     TextField(
                       onChanged: widget.onTitleChanged,
                       textAlign: TextAlign.start,
-                      decoration: InputDecoration(
-                        hintText: 'Plant Name',
-                        hintStyle: GoogleFonts.antic(
-                            textStyle: const TextStyle(
-                          fontSize: 25,
-                        )),
+                      decoration: const InputDecoration(
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.green,
+                        ),
+                        hintText: 'plant name',
                       ),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    const Text(
-                      'Description of a plant',
+                    TextField(
+                      onChanged: widget.onTitleChanged,
+                      textAlign: TextAlign.start,
+                      decoration: const InputDecoration(
+                        icon: Icon(
+                          Icons.thermostat,
+                          color: Colors.green,
+                        ),
+                        hintText: '10-25 ℃',
+                      ),
                     ),
                     const SizedBox(
-                      height: 70,
+                      height: 20,
+                    ),
+                    TextField(
+                      onChanged: widget.onTitleChanged,
+                      textAlign: TextAlign.start,
+                      decoration: const InputDecoration(
+                        icon: Icon(
+                          Icons.wb_sunny_outlined,
+                          color: Colors.green,
+                        ),
+                        hintText: 'in the shade',
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextField(
+                      onChanged: widget.onTitleChanged,
+                      textAlign: TextAlign.start,
+                      decoration: const InputDecoration(
+                        icon: Icon(
+                          Icons.water_drop_outlined,
+                          color: Colors.green,
+                        ),
+                        hintText: '2 / week',
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 50,
                     ),
                     InkWell(
                       onTap: () async {
@@ -250,6 +314,8 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                         widget.onDateChanged(selectedDate);
                       },
                       child: Container(
+                        height: 50,
+                        width: 330,
                         decoration: const BoxDecoration(
                             boxShadow: [
                               BoxShadow(
@@ -258,25 +324,27 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                                   offset: Offset(0, 3.5),
                                   color: Colors.grey),
                             ],
-                            color: Color.fromARGB(255, 242, 242, 242),
+                            color: Color.fromARGB(255, 113, 169, 122),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        height: 50,
+                                BorderRadius.all(Radius.circular(90))),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          padding: const EdgeInsets.only(right: 30.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Icon(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
                                 Icons.calendar_month_outlined,
-                                color: Color.fromARGB(255, 86, 134, 87),
+                                color: Colors.white,
+                              ),
+                              const SizedBox(
+                                width: 15,
                               ),
                               Text(
-                                'Next Watering',
-                              ),
-                              Icon(
-                                Icons.water_drop_outlined,
-                                color: Color.fromARGB(255, 86, 134, 87),
+                                'When next watering?',
+                                style: GoogleFonts.antic(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
@@ -285,30 +353,6 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                     ),
                     const SizedBox(
                       height: 10,
-                    ),
-                    ExpansionTile(
-                      leading: const Icon(Icons.edit),
-                      title: Text(
-                        'Diary',
-                        style: GoogleFonts.roboto(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: const Color.fromARGB(255, 86, 133, 94),
-                        ),
-                      ),
-                      children: const [
-                        ListTile(
-                          title: TextField(
-                            maxLines: null,
-                            decoration: InputDecoration.collapsed(
-                              hintText: '',
-                              hintStyle: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 ),
@@ -359,9 +403,10 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                           title: const Text(
                             'Choose option',
                             style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20,
-                                color: Colors.green),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                              color: const Color.fromARGB(255, 113, 169, 122),
+                            ),
                           ),
                           content: SingleChildScrollView(
                             child: ListBody(children: [
@@ -369,12 +414,14 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                                 onTap: () {
                                   pickImage(ImageSource.gallery);
                                 },
-                                splashColor: Colors.green,
+                                splashColor:
+                                    const Color.fromARGB(255, 113, 169, 122),
                                 child: Row(
                                   children: const [
                                     Icon(
                                       Icons.camera,
-                                      color: Colors.green,
+                                      color: const Color.fromARGB(
+                                          255, 113, 169, 122),
                                     ),
                                     SizedBox(width: 10),
                                     Text('Gallery'),
@@ -386,12 +433,14 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                                 onTap: () {
                                   pickImageC(ImageSource.camera);
                                 },
-                                splashColor: Colors.green,
+                                splashColor:
+                                    const Color.fromARGB(255, 113, 169, 122),
                                 child: Row(
                                   children: const [
                                     Icon(
                                       Icons.image,
-                                      color: Colors.green,
+                                      color: const Color.fromARGB(
+                                          255, 113, 169, 122),
                                     ),
                                     SizedBox(width: 10),
                                     Text('Camera'),
