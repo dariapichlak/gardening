@@ -1,19 +1,18 @@
 import 'package:bloc/bloc.dart';
-import 'package:gardening/home/pages/notes_page_content/add_notes_page/add_notes_page.dart';
+import 'package:gardening/repositories/notes_repository.dart';
 import 'package:meta/meta.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 part 'add_notes_page_state.dart';
 
 class AddNotesPageContentCubit extends Cubit<AddNotesPageContentState> {
-  AddNotesPageContentCubit() : super(const AddNotesPageContentState());
+  AddNotesPageContentCubit(this._notesRepository)
+      : super(const AddNotesPageContentState());
+
+  final NotesRepository _notesRepository;
 
   Future<void> add(String titleNote) async {
     try {
-      await FirebaseFirestore.instance.collection('notes').add({
-        'titleNote': titleNote,
-        'value': false,
-      });
+      await _notesRepository.add(titleNote);
       emit(const AddNotesPageContentState(save: true));
     } catch (error) {
       emit(AddNotesPageContentState(errorMessage: error.toString()));

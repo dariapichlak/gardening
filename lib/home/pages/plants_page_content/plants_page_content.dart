@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gardening/home/details/details_content/details_content.dart';
 import 'package:gardening/home/pages/plants_page_content/add_plant_page/add_plant_page.dart';
 import 'package:gardening/home/pages/plants_page_content/cubit/plants_page_content_cubit.dart';
-import 'package:gardening/home/pages/plants_page_content/plant_card/plant_card.dart';
+import 'package:gardening/home/settings/settings.dart';
+import 'package:gardening/repositories/plants_repository.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PlantsPageContent extends StatelessWidget {
@@ -10,29 +12,50 @@ class PlantsPageContent extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  // ???
+
   @override
   Widget build(BuildContext context) {
+    // Color getColor() {
+    //   if (??? < 1) {
+    //     return Color.fromARGB(255, 255, 138, 130);
+    //   } else {
+    //     return Color.fromARGB(255, 103, 159, 105);
+    //   }
+    // }
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 254, 254, 254),
       appBar: AppBar(
-        elevation: 5,
+        elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {},
+            icon: const Icon(
+              Icons.settings,
+              color: Color.fromARGB(255, 172, 172, 172),
+            ),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const Settings(
+                        id: '',
+                      )));
+            },
           ),
         ),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(35),
-                bottomRight: Radius.circular(35))),
-        backgroundColor: const Color.fromARGB(255, 86, 133, 94),
+                bottomLeft: Radius.circular(0),
+                bottomRight: Radius.circular(0))),
+        backgroundColor: const Color.fromARGB(255, 254, 254, 254),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: IconButton(
-              icon: const Icon(Icons.add),
+              icon: const Icon(
+                Icons.add,
+                color: Color.fromARGB(255, 86, 133, 94),
+              ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => const AddPlantPage(),
@@ -44,7 +67,8 @@ class PlantsPageContent extends StatelessWidget {
         ],
       ),
       body: BlocProvider(
-        create: (context) => PlantsPageContentCubit()..start(),
+        create: (context) =>
+            PlantsPageContentCubit(PlantsRepository())..start(),
         child: BlocBuilder<PlantsPageContentCubit, PlantsPageContentState>(
           builder: (context, state) {
             if (state.errorMessage.isNotEmpty) {
@@ -58,92 +82,180 @@ class PlantsPageContent extends StatelessWidget {
               );
             }
             if (state.documents.isNotEmpty) {
-              final documents = state.documents;
-              return Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: ListView(
-                  children: [
-                    for (final document in documents) ...[
-                      Dismissible(
-                        background: const DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 325.0),
-                            child: Icon(Icons.delete),
-                          ),
+              final plantModels = state.documents;
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'My plants',
+                          style: GoogleFonts.antic(fontSize: 30),
                         ),
-                        key: ValueKey(document.id),
-                        confirmDismiss: (direction) async {
-                          return direction == DismissDirection.endToStart;
-                        },
-                        onDismissed: (_) {
-                          context.read<PlantsPageContentCubit>().remove(
-                                documentID: document.id,
-                              );
-                        },
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const PlantCard(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                              width: 350,
-                              height: 125,
-                              padding: const EdgeInsets.all(8),
-                              margin: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: const Color.fromARGB(255, 86, 133, 94),
-                              ),
-                              child: Row(
-                                children: [
-                                  const CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage('images/plantimage.jpg'),
-                                    radius: 100,
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(0.0),
+                      child: Container(
+                        margin: const EdgeInsets.all(20),
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 254, 254, 254),
+                        ),
+                        child: GridView.count(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 20,
+                          children: [
+                            for (final plantModel in plantModels) ...[
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => DetailsContent(
+                                        id: plantModel.id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Center(
+                                  child: Container(
+                                    height: 190,
+                                    width: 160,
+                                    decoration: const BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(25)),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Color.fromARGB(
+                                                255, 203, 203, 203),
+                                            blurRadius: 6,
+                                            spreadRadius: 0.3,
+                                            offset: Offset(0, 6)),
+                                      ],
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                width: 160,
+                                                height: 120,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(25),
+                                                    topRight:
+                                                        Radius.circular(25),
+                                                  ),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                      plantModel.imageURL,
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  50)),
+                                                      color: Color.fromARGB(
+                                                          255, 135, 191, 144),
+                                                      // getColor(),
+                                                    ),
+                                                    width: 32,
+                                                    height: 32,
+                                                    child: Center(
+                                                      child: Text(
+                                                        plantModel
+                                                            .daysToWatering(),
+                                                        style: const TextStyle(
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Container(
+                                                        width: 100,
+                                                        color:
+                                                            Colors.transparent,
+                                                        child: Center(
+                                                          child: Text(
+                                                            plantModel
+                                                                .plantName,
+                                                            style: GoogleFonts
+                                                                .antic(
+                                                                    fontSize:
+                                                                        18),
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      const Text(
+                                                        'days to watering',
+                                                        style: TextStyle(
+                                                          fontSize: 11,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+
+                                              // Text(
+                                              //   plantModel
+                                              //       .relaseDateFormatted(),
+                                              //   style: const TextStyle(
+                                              //     fontSize: 10,
+                                              //   ),
+                                              // ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(document['plantName'].toString()),
-                                      const SizedBox(
-                                        height: 12,
-                                      ),
-                                      Row(
-                                        children: const [
-                                          Icon(Icons.water_drop_outlined),
-                                          Text(
-                                            '  ',
-                                          ),
-                                          Text(
-                                            '0',
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            ' days to watering',
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
-                    ],
-                  ],
-                ),
+                    ),
+                  ),
+                ],
               );
             }
             return Center(

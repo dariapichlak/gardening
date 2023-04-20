@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gardening/core/enum.dart';
+import 'package:gardening/data/remote_data_sources/weather_remote_data_source.dart';
+import 'package:gardening/home/pages/calendar_page_content/cubit/calendar_page_content_cubit.dart';
+import 'package:gardening/home/pages/testing_page.dart';
+import 'package:gardening/home/settings/settings.dart';
+import 'package:gardening/models/weather_model.dart';
+import 'package:gardening/repositories/weather_repository.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarPageContent extends StatefulWidget {
@@ -14,70 +22,269 @@ class CalendarPageContent extends StatefulWidget {
 class _CalendarPageContentState extends State<CalendarPageContent> {
   DateTime today = DateTime.now();
 
-  void _onDaySelected(DateTime day, DateTime focusedDay) {
-    setState(() {
-      today = day;
-    });
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CalendarPageContentCubit(
+          WeatherRopository(WeatherRemoteDataSource())),
+      child: BlocConsumer<CalendarPageContentCubit, CalendarPageContentState>(
+        listener: (context, state) {
+          if (state.status == Status.error) {
+            final errorMessage = state.errorMessage ?? 'Unknown error';
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(errorMessage),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          final weatherModel = state.model;
+          return Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage('images/weatherimage.jpg'),
+              fit: BoxFit.cover,
+            )),
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                leading: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.settings,
+                      color: Color.fromARGB(255, 172, 172, 172),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => const Settings(
+                          id: '',
+                        ),
+                      ));
+                    },
+                  ),
+                ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(0),
+                    bottomRight: Radius.circular(0),
+                  ),
+                ),
+                elevation: 0,
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240),
+              ),
+              body: Padding(
+                padding: const EdgeInsets.only(top: 0.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      width: 340,
+                      height: 240,
+                      decoration: const BoxDecoration(
+                        color: Colors.transparent,
+                      ),
+                      child: Builder(builder: (context) {
+                        if (state.status == Status.loading) {
+                          return const CircularProgressIndicator(
+                            color: Color.fromARGB(255, 86, 133, 94),
+                          );
+                        }
+                        return Column(
+                          children: [
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Builder(
+                              builder: (context) {
+                                if (weatherModel != null) {
+                                  return Column(
+                                    children: [
+                                      _SearchWeather(),
+                                      const SizedBox(
+                                        height: 33,
+                                      ),
+                                      _DisplayWeatherWidget(
+                                          weatherModel: weatherModel),
+                                    ],
+                                  );
+                                }
+                                return Column(
+                                  children: [
+                                    _SearchWeather(),
+                                    const SizedBox(
+                                      height: 35,
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 254, 254, 254),
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 25,
+                                offset: Offset(0, 10),
+                                color: Color.fromARGB(255, 75, 75, 75)),
+                          ],
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(35),
+                            topRight: Radius.circular(35),
+                          ),
+                        ),
+                        child: ListView(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                color: Colors.transparent,
+                                height: 350,
+                                child: SfCalendar(
+                                  view: CalendarView.month,
+                                  initialSelectedDate: DateTime.now(),
+                                  cellBorderColor: Colors.transparent,
+                                  showNavigationArrow: true,
+                                  headerHeight: 70,
+                                  headerStyle: const CalendarHeaderStyle(
+                                    textAlign: TextAlign.center,
+                                    textStyle: TextStyle(
+                                        fontSize: 18,
+                                        fontFamily: 'Antic',
+                                        letterSpacing: 5,
+                                        color: Color.fromARGB(255, 86, 133, 94),
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  todayHighlightColor:
+                                      const Color.fromARGB(255, 86, 133, 94),
+                                  todayTextStyle: const TextStyle(
+                                      fontWeight: FontWeight.w500),
+                                  selectionDecoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    border: Border.all(
+                                      color: Colors.transparent,
+                                      width: 1.5,
+                                    ),
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
+}
+
+class _DisplayWeatherWidget extends StatelessWidget {
+  const _DisplayWeatherWidget({
+    Key? key,
+    required this.weatherModel,
+  }) : super(key: key);
+
+  final WeatherModel weatherModel;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 254, 254, 254),
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {},
+    return BlocBuilder<CalendarPageContentCubit, CalendarPageContentState>(
+      builder: (context, state) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              weatherModel.city,
+              style: GoogleFonts.roboto(fontSize: 18, color: Colors.black),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              '${weatherModel.temperature} °C',
+              style: GoogleFonts.roboto(fontSize: 60, color: Colors.black),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              weatherModel.condition,
+              style: GoogleFonts.roboto(fontSize: 20, color: Colors.black),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _SearchWeather extends StatelessWidget {
+  _SearchWeather({
+    Key? key,
+  }) : super(key: key);
+
+  final _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 340,
+          height: 50,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey,
+                  blurRadius: 9,
+                  spreadRadius: 0.5,
+                  offset: Offset(0, 3)),
+            ],
+          ),
+          child: TextField(
+            controller: _controller,
+            textAlign: TextAlign.left,
+            decoration: InputDecoration(
+              hintText: 'Search weather for city...',
+              border: InputBorder.none,
+              icon: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: IconButton(
+                  icon: const Icon(Icons.search),
+                  color: Colors.grey,
+                  onPressed: () {
+                    context
+                        .read<CalendarPageContentCubit>()
+                        .getWeatherModel(city: _controller.text);
+                  },
+                ),
+              ),
+            ),
           ),
         ),
-        elevation: 5,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(35),
-                bottomRight: Radius.circular(35))),
-        backgroundColor: const Color.fromARGB(255, 86, 133, 94),
-      ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 50,
-          ),
-          const Text('Weather'),
-          const SizedBox(
-            height: 210,
-          ),
-          SfCalendar(
-            view: CalendarView.month,
-            initialSelectedDate: DateTime.now(),
-            cellBorderColor: Colors.transparent,
-            showNavigationArrow: true,
-            headerHeight: 70,
-            headerStyle: const CalendarHeaderStyle(
-              textAlign: TextAlign.center,
-              textStyle: TextStyle(
-                  fontSize: 18,
-                  fontStyle: FontStyle.normal,
-                  letterSpacing: 5,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w300),
-            ),
-            todayHighlightColor: const Color.fromARGB(255, 255, 196, 2),
-            selectionDecoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border.all(
-                color: const Color.fromARGB(255, 255, 196, 2),
-                width: 1.5,
-              ),
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-        ],
-      ),
+      ],
     );
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/pages/notes_page_content/add_notes_page/add_notes_page.dart';
 import 'package:gardening/home/pages/notes_page_content/cubit/notes_page_content_cubit.dart';
+import 'package:gardening/home/settings/settings.dart';
+import 'package:gardening/repositories/notes_repository.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NotesPageContent extends StatefulWidget {
@@ -23,21 +25,32 @@ class _NotesPageContentState extends State<NotesPageContent> {
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {},
+            icon: const Icon(
+              Icons.settings,
+              color: Color.fromARGB(255, 172, 172, 172),
+            ),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const Settings(
+                        id: '',
+                      )));
+            },
           ),
         ),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(35),
-                bottomRight: Radius.circular(35))),
-        elevation: 5,
-        backgroundColor: const Color.fromARGB(255, 86, 133, 94),
+                bottomLeft: Radius.circular(0),
+                bottomRight: Radius.circular(0))),
+        elevation: 0,
+        backgroundColor: const Color.fromARGB(255, 254, 254, 254),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: IconButton(
-              icon: const Icon(Icons.notes),
+              icon: const Icon(
+                Icons.edit,
+                color: Color.fromARGB(255, 86, 133, 94),
+              ),
               onPressed: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const AddNotesPage()));
@@ -47,7 +60,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
         ],
       ),
       body: BlocProvider(
-        create: (context) => NotesPageContentCubit()..start(),
+        create: (context) => NotesPageContentCubit(NotesRepository())..start(),
         child: BlocBuilder<NotesPageContentCubit, NotesPageContentState>(
           builder: (context, state) {
             if (state.errorMessage.isNotEmpty) {
@@ -61,76 +74,113 @@ class _NotesPageContentState extends State<NotesPageContent> {
               );
             }
             if (state.documents.isNotEmpty) {
-              final documents = state.documents;
+              final noteModels = state.documents;
               return Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: ListView(
+                padding: const EdgeInsets.only(top: 0.0),
+                child: Column(
                   children: [
-                    for (final document in documents) ...[
-                      Dismissible(
-                        background: const DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 254, 254, 254),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 325.0),
-                            child: Icon(Icons.delete),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 2.0, bottom: 20, left: 25),
+                          child: Text(
+                            'Notes',
+                            style: GoogleFonts.antic(fontSize: 30),
                           ),
                         ),
-                        key: ValueKey(document.id),
-                        confirmDismiss: (direction) async {
-                          return direction == DismissDirection.endToStart;
-                        },
-                        onDismissed: (_) {
-                          context.read<NotesPageContentCubit>().remove(
-                                documentID: document.id,
-                              );
-                        },
-                        child: Container(
-                          width: 350,
-                          padding: const EdgeInsets.all(3),
-                          margin: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: const Color.fromARGB(255, 254, 254, 254),
+                      ],
+                    ),
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(blurRadius: 15, offset: Offset(0, 10)),
+                          ],
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(35),
+                            topRight: Radius.circular(35),
                           ),
-                          child: Builder(builder: (context) {
-                            return Theme(
-                              data: Theme.of(context).copyWith(
-                                unselectedWidgetColor: Colors.black,
-                              ),
-                              child: CheckboxListTile(
-                                activeColor:
-                                    const Color.fromARGB(255, 255, 191, 0),
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                title: Text(
-                                  document['titleNote'],
-                                  style: GoogleFonts.roboto(
-                                    textStyle: const TextStyle(fontSize: 15),
-                                    color: Colors.black,
+                        ),
+                        child: ListView(
+                          children: [
+                            const SizedBox(height: 40),
+                            for (final noteModel in noteModels) ...[
+                              Dismissible(
+                                background: const DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 254, 254, 254),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 325.0),
+                                    child: Icon(Icons.delete),
                                   ),
                                 ),
-                                value: document['value'],
-                                onChanged: (bool? value) {
-                                  context.read<NotesPageContentCubit>().checked(
-                                        value: value,
-                                        documentID: document.id,
+                                key: ValueKey(noteModel.id),
+                                confirmDismiss: (direction) async {
+                                  return direction ==
+                                      DismissDirection.endToStart;
+                                },
+                                onDismissed: (_) {
+                                  context.read<NotesPageContentCubit>().remove(
+                                        documentID: noteModel.id,
                                       );
                                 },
+                                child: Container(
+                                  width: 350,
+                                  padding: const EdgeInsets.all(3),
+                                  margin: const EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: const Color.fromARGB(
+                                        255, 254, 254, 254),
+                                  ),
+                                  child: Builder(builder: (context) {
+                                    return Theme(
+                                      data: Theme.of(context).copyWith(
+                                        unselectedWidgetColor: Colors.black,
+                                      ),
+                                      child: CheckboxListTile(
+                                        activeColor: const Color.fromARGB(
+                                            255, 100, 200, 100),
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        title: Text(
+                                          noteModel.titleNote,
+                                          style: GoogleFonts.roboto(
+                                            textStyle:
+                                                const TextStyle(fontSize: 15),
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        value: noteModel.value,
+                                        onChanged: (bool? value) {
+                                          context
+                                              .read<NotesPageContentCubit>()
+                                              .checked(
+                                                value: value,
+                                                documentID: noteModel.id,
+                                              );
+                                        },
+                                      ),
+                                    );
+                                  }),
+                                ),
                               ),
-                            );
-                          }),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 33),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  thickness: 1,
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Divider(
-                          color: Colors.grey,
-                          thickness: 1,
-                        ),
-                      ),
-                    ],
+                    ),
                   ],
                 ),
               );

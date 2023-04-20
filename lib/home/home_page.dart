@@ -1,7 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gardening/home/pages/calendar_page_content/calendar_page_content.dart';
-import 'package:gardening/home/my_drawer/my_drawer.dart';
 import 'package:gardening/home/pages/notes_page_content/notes_page_content.dart';
 import 'package:gardening/home/pages/plants_page_content/plants_page_content.dart';
 
@@ -34,9 +33,8 @@ class _HomePageState extends State<HomePage> {
             child: NotesPageContent(),
           );
         }
-        return const PlantsPageContent();
+        return PlantsPageContent();
       }),
-      drawer: const MyDrawer(),
       bottomNavigationBar: Theme(
         data: Theme.of(context)
             .copyWith(iconTheme: const IconThemeData(color: Colors.white)),

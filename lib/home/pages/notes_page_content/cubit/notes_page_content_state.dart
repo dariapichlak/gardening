@@ -1,8 +1,7 @@
 part of 'notes_page_content_cubit.dart';
 
-@immutable
 class NotesPageContentState {
-  final List<QueryDocumentSnapshot<Map<String, dynamic>>> documents;
+  final List<NoteModel> documents;
   final bool isLoading;
   final String errorMessage;
   final bool value;

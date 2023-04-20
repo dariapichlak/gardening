@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/home/pages/notes_page_content/add_notes_page/cubit/add_notes_page_cubit.dart';
+import 'package:gardening/repositories/notes_repository.dart';
 
 class AddNotesPage extends StatefulWidget {
   const AddNotesPage({
@@ -17,7 +18,7 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddNotesPageContentCubit(),
+      create: (context) => AddNotesPageContentCubit(NotesRepository()),
       child: BlocListener<AddNotesPageContentCubit, AddNotesPageContentState>(
         listener: (context, state) {
           if (state.save) {
@@ -35,8 +36,22 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
         child: BlocBuilder<AddNotesPageContentCubit, AddNotesPageContentState>(
           builder: (context, state) {
             return Scaffold(
-              backgroundColor: const Color.fromARGB(255, 254, 254, 254),
+              backgroundColor: const Color.fromARGB(255, 242, 242, 242),
               appBar: AppBar(
+                leading: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Color.fromARGB(255, 172, 172, 172),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+                elevation: 0,
+                backgroundColor: const Color.fromARGB(255, 242, 242, 242),
                 actions: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -48,7 +63,10 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
                                       titleNote,
                                     );
                               },
-                        icon: const Icon(Icons.save)),
+                        icon: const Icon(
+                          Icons.save,
+                          color: Colors.grey,
+                        )),
                   )
                 ],
                 title: const Text(''),
@@ -56,25 +74,48 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(35),
                         bottomRight: Radius.circular(35))),
-                elevation: 5,
-                backgroundColor: const Color.fromARGB(255, 86, 133, 94),
               ),
               body: Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: ListView(
+                padding: const EdgeInsets.only(top: 0.0),
+                child: Column(
                   children: [
-                    TextField(
-                      maxLines: null,
-                      decoration: const InputDecoration.collapsed(
-                          hintText: 'Notes...',
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                          )),
-                      onChanged: ((newValue) {
-                        setState(() {
-                          titleNote = newValue;
-                        });
-                      }),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(blurRadius: 15, offset: Offset(0, 10)),
+                          ],
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(35),
+                            topRight: Radius.circular(35),
+                          ),
+                        ),
+                        child: ListView(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(35.0),
+                              child: TextField(
+                                maxLines: null,
+                                decoration: const InputDecoration.collapsed(
+                                  hintText: 'Notes...',
+                                  hintStyle: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                onChanged: ((newValue) {
+                                  setState(() {
+                                    titleNote = newValue;
+                                  });
+                                }),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -86,12 +127,3 @@ class _AddNotesPageContentState extends State<AddNotesPage> {
     );
   }
 }
-
-
-//  onPressed: titleNote.isEmpty
-//                     ? null
-//                     : () {
-//                         context.read<AddNotesPageContentCubit>().add(
-//                               titleNote,
-//                             );
-//                       },
