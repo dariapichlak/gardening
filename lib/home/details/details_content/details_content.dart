@@ -86,7 +86,7 @@ class _DetailsContentState extends State<DetailsContent> {
                   top: 190,
                   child: Container(
                     width: 395,
-                    height: 600,
+                    height: 900,
                     decoration: BoxDecoration(
                         boxShadow: const [
                           BoxShadow(blurRadius: 15, offset: Offset(0, 10)),
@@ -101,107 +101,143 @@ class _DetailsContentState extends State<DetailsContent> {
                           Text(
                             plantModel.plantName,
                             style: GoogleFonts.antic(
-                              fontSize: 25,
+                              fontSize: 30,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                           const SizedBox(
-                            height: 20,
+                            height: 7,
                           ),
-                           Text(
-                            plantModel.temp,
-                            style: GoogleFonts.antic(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                           const SizedBox(
-                            height: 20,
-                          ),
-                           Text(
-                            plantModel.sun,
-                            style: GoogleFonts.antic(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                           const SizedBox(
-                            height: 20,
-                          ),
-                           Text(
-                            plantModel.water,
-                            style: GoogleFonts.antic(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          const Divider(
+                            thickness: 2,
                           ),
                           const SizedBox(
-                            height: 70,
+                            height: 7,
                           ),
-                          InkWell(
-                            onTap: () {},
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                        spreadRadius: 0.1,
-                                        blurRadius: 7,
-                                        offset: Offset(0, 3.5),
-                                        color: Colors.grey),
-                                  ],
-                                  color: Color.fromARGB(255, 242, 242, 242),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              height: 50,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Icon(
-                                      Icons.calendar_month_outlined,
-                                      color: Color.fromARGB(255, 86, 134, 87),
-                                    ),
-                                    Text(
-                                      'Next Watering',
-                                    ),
-                                    Icon(
-                                      Icons.water_drop_outlined,
-                                      color: Color.fromARGB(255, 86, 134, 87),
-                                    ),
-                                  ],
-                                ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.thermostat,
+                                color: Colors.green,
                               ),
-                            ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                '${plantModel.temp} ℃',
+                                style: const TextStyle(fontSize: 17),
+                              ),
+                            ],
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 7,
                           ),
-                          ExpansionTile(
-                            leading: const Icon(Icons.edit),
-                            title: Text(
-                              'Diary',
-                              style: GoogleFonts.roboto(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: const Color.fromARGB(255, 86, 133, 94),
+                          const Divider(
+                            thickness: 2,
+                          ),
+                          const SizedBox(
+                            height: 7,
+                          ),
+                          Row(
+                            children: [
+                              const Icon(Icons.wb_sunny_outlined,
+                                  color: Colors.green),
+                              const SizedBox(width: 15),
+                              Text(
+                                plantModel.sun,
+                                style: const TextStyle(fontSize: 17),
                               ),
-                            ),
-                            children: const [
-                              ListTile(
-                                title: TextField(
-                                  maxLines: null,
-                                  decoration: InputDecoration.collapsed(
-                                    hintText: '',
-                                    hintStyle: TextStyle(
-                                      fontSize: 16,
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 7,
+                          ),
+                          const Divider(
+                            thickness: 2,
+                          ),
+                          const SizedBox(
+                            height: 7,
+                          ),
+                          Row(
+                            children: [
+                              const Icon(Icons.water_drop_outlined,
+                                  color: Colors.green),
+                              const SizedBox(width: 15),
+                              Text(
+                                '${plantModel.water} /week',
+                                style: const TextStyle(fontSize: 17),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 7,
+                          ),
+                          const Divider(
+                            thickness: 2,
+                          ),
+                          const SizedBox(
+                            height: 7,
+                          ),
+                          const SizedBox(
+                            height: 48,
+                          ),
+                          Column(
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  // final selectedDate = await showDatePicker(
+                                  //   context: context,
+                                  //   initialDate: DateTime.now(),
+                                  //   firstDate: DateTime.now(),
+                                  //   lastDate: DateTime.now().add(
+                                  //     const Duration(days: 365 * 10),
+                                  //   ),
+                                  // );
+                                  // // widget.onDateChanged(selectedDate);
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 330,
+                                  decoration: const BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                            spreadRadius: 0.1,
+                                            blurRadius: 7,
+                                            offset: Offset(0, 3.5),
+                                            color: Colors.grey),
+                                      ],
+                                      color: Color.fromARGB(255, 113, 169, 122),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(90))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 30.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          Icons.calendar_month_outlined,
+                                          color: Colors.white,
+                                        ),
+                                        const SizedBox(
+                                          width: 15,
+                                        ),
+                                        Text(
+                                          'When next watering?',
+                                          style: GoogleFonts.antic(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
                               ),
                             ],
+                          ),
+                          const SizedBox(
+                            height: 10,
                           ),
                         ],
                       ),

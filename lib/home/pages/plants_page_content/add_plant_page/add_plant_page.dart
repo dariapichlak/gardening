@@ -243,7 +243,7 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
               ], color: Colors.white, borderRadius: BorderRadius.circular(35)),
               child: Padding(
                 padding: const EdgeInsets.only(top: 100.0, left: 40, right: 40),
-                child: Column(
+                child: ListView(
                   children: [
                     TextField(
                       onChanged: widget.onTitleChanged,
@@ -405,7 +405,7 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 20,
-                              color: const Color.fromARGB(255, 113, 169, 122),
+                              color: Color.fromARGB(255, 113, 169, 122),
                             ),
                           ),
                           content: SingleChildScrollView(
@@ -420,8 +420,7 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                                   children: const [
                                     Icon(
                                       Icons.camera,
-                                      color: const Color.fromARGB(
-                                          255, 113, 169, 122),
+                                      color: Color.fromARGB(255, 113, 169, 122),
                                     ),
                                     SizedBox(width: 10),
                                     Text('Gallery'),
@@ -439,8 +438,7 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                                   children: const [
                                     Icon(
                                       Icons.image,
-                                      color: const Color.fromARGB(
-                                          255, 113, 169, 122),
+                                      color: Color.fromARGB(255, 113, 169, 122),
                                     ),
                                     SizedBox(width: 10),
                                     Text('Camera'),

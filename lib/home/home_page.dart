@@ -15,8 +15,8 @@ class _HomePageState extends State<HomePage> {
   var index = 1;
   final items = const <Widget>[
     Icon(Icons.calendar_month, size: 30),
-    Icon(Icons.note_add, size: 30),
     Icon(Icons.note, size: 30),
+    Icon(Icons.list_outlined, size: 30),
   ];
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
             child: NotesPageContent(),
           );
         }
-        return PlantsPageContent();
+        return const PlantsPageContent();
       }),
       bottomNavigationBar: Theme(
         data: Theme.of(context)

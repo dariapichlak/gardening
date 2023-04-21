@@ -188,7 +188,7 @@ class _NotesPageContentState extends State<NotesPageContent> {
             return Center(
               child: Text('Add Notes',
                   style: GoogleFonts.dancingScript(
-                      fontSize: 40, color: Colors.black)),
+                      fontSize: 35, color: Colors.black)),
             );
           },
         ),

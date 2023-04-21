@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gardening/core/enum.dart';
 import 'package:gardening/data/remote_data_sources/weather_remote_data_source.dart';
 import 'package:gardening/home/pages/calendar_page_content/cubit/calendar_page_content_cubit.dart';
-import 'package:gardening/home/pages/testing_page.dart';
 import 'package:gardening/home/settings/settings.dart';
 import 'package:gardening/models/weather_model.dart';
 import 'package:gardening/repositories/weather_repository.dart';
@@ -41,90 +40,71 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
         },
         builder: (context, state) {
           final weatherModel = state.model;
-          return Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage('images/weatherimage.jpg'),
-              fit: BoxFit.cover,
-            )),
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
-                leading: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.settings,
-                      color: Color.fromARGB(255, 172, 172, 172),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => const Settings(
-                          id: '',
-                        ),
-                      ));
-                    },
-                  ),
-                ),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(0),
-                    bottomRight: Radius.circular(0),
-                  ),
-                ),
-                elevation: 0,
-                backgroundColor: const Color.fromARGB(255, 240, 240, 240),
-              ),
-              body: Padding(
-                padding: const EdgeInsets.only(top: 0.0),
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      width: 340,
-                      height: 240,
-                      decoration: const BoxDecoration(
-                        color: Colors.transparent,
+          return Stack(
+            children: [
+              const BackgroundImage(),
+              Scaffold(
+                backgroundColor: Colors.transparent,
+                appBar: AppBar(
+                  leading: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.settings,
+                        color: Color.fromARGB(255, 172, 172, 172),
                       ),
-                      child: Builder(builder: (context) {
-                        if (state.status == Status.loading) {
-                          return const CircularProgressIndicator(
-                            color: Color.fromARGB(255, 86, 133, 94),
-                          );
-                        }
-                        return Column(
-                          children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Builder(
-                              builder: (context) {
-                                if (weatherModel != null) {
-                                  return Column(
-                                    children: [
-                                      _SearchWeather(),
-                                      const SizedBox(
-                                        height: 33,
-                                      ),
-                                      _DisplayWeatherWidget(
-                                          weatherModel: weatherModel),
-                                    ],
-                                  );
-                                }
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => const Settings(
+                            id: '',
+                          ),
+                        ));
+                      },
+                    ),
+                  ),
+                  elevation: 0,
+                  backgroundColor: const Color.fromARGB(255, 240, 240, 240),
+                ),
+                body: Column(
+                  children: [
+                    Builder(builder: (context) {
+                      if (state.status == Status.loading) {
+                        return const CircularProgressIndicator(
+                          color: Color.fromARGB(255, 86, 133, 94),
+                        );
+                      }
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Builder(
+                            builder: (context) {
+                              if (weatherModel != null) {
                                 return Column(
                                   children: [
                                     _SearchWeather(),
                                     const SizedBox(
-                                      height: 35,
+                                      height: 30,
                                     ),
+                                    _DisplayWeatherWidget(
+                                        weatherModel: weatherModel),
                                   ],
                                 );
-                              },
-                            ),
-                          ],
-                        );
-                      }),
-                    ),
+                              }
+                              return Column(
+                                children: [
+                                  _SearchWeather(),
+                                  const SizedBox(
+                                    height: 90,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    }),
                     const SizedBox(
                       height: 30,
                     ),
@@ -149,7 +129,7 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
                               padding: const EdgeInsets.all(15.0),
                               child: Container(
                                 color: Colors.transparent,
-                                height: 350,
+                                height: 400,
                                 child: SfCalendar(
                                   view: CalendarView.month,
                                   initialSelectedDate: DateTime.now(),
@@ -187,9 +167,29 @@ class _CalendarPageContentState extends State<CalendarPageContent> {
                   ],
                 ),
               ),
-            ),
+            ],
           );
         },
+      ),
+    );
+  }
+}
+
+class BackgroundImage extends StatelessWidget {
+  const BackgroundImage({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('images/weatherimage.jpg'),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
@@ -212,24 +212,28 @@ class _DisplayWeatherWidget extends StatelessWidget {
           children: [
             Text(
               weatherModel.city,
-              style: GoogleFonts.roboto(fontSize: 18, color: Colors.black),
+              style: GoogleFonts.antic(
+                  fontSize: 18, color: Colors.black, letterSpacing: 3),
             ),
             const SizedBox(
-              height: 5,
+              height: 3,
             ),
             Text(
               '${weatherModel.temperature} °C',
-              style: GoogleFonts.roboto(fontSize: 60, color: Colors.black),
+              style: GoogleFonts.antic(fontSize: 50, color: Colors.black),
             ),
             const SizedBox(
-              height: 5,
+              height: 3,
             ),
             Text(
               weatherModel.condition,
-              style: GoogleFonts.roboto(fontSize: 20, color: Colors.black),
+              style: GoogleFonts.dancingScript(
+                  fontSize: 22,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(
-              height: 10,
+              height: 5,
             ),
           ],
         );
@@ -248,9 +252,10 @@ class _SearchWeather extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: 340,
+          width: 320,
           height: 50,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(30)),

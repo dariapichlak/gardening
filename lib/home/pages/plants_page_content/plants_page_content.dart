@@ -98,7 +98,7 @@ class PlantsPageContent extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 5,
                   ),
                   Expanded(
                     child: Padding(
@@ -110,7 +110,7 @@ class PlantsPageContent extends StatelessWidget {
                         ),
                         child: GridView.count(
                           crossAxisCount: 2,
-                          crossAxisSpacing: 5,
+                          crossAxisSpacing: 10,
                           mainAxisSpacing: 20,
                           children: [
                             for (final plantModel in plantModels) ...[
@@ -126,8 +126,8 @@ class PlantsPageContent extends StatelessWidget {
                                 },
                                 child: Center(
                                   child: Container(
-                                    height: 190,
-                                    width: 160,
+                                    height: 160,
+                                    width: 150,
                                     decoration: const BoxDecoration(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(25)),
@@ -147,10 +147,12 @@ class PlantsPageContent extends StatelessWidget {
                                       children: [
                                         Center(
                                           child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
                                             children: [
                                               Container(
-                                                width: 160,
-                                                height: 120,
+                                                width: 150,
+                                                height: 100,
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       const BorderRadius.only(
@@ -167,7 +169,7 @@ class PlantsPageContent extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
-                                              const SizedBox(height: 5),
+                                              const SizedBox(height: 8),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -182,7 +184,6 @@ class PlantsPageContent extends StatelessWidget {
                                                                   50)),
                                                       color: Color.fromARGB(
                                                           255, 135, 191, 144),
-                                                      // getColor(),
                                                     ),
                                                     width: 32,
                                                     height: 32,
@@ -197,9 +198,12 @@ class PlantsPageContent extends StatelessWidget {
                                                     ),
                                                   ),
                                                   const SizedBox(
-                                                    width: 8,
+                                                    width: 5,
                                                   ),
                                                   Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Container(
                                                         width: 100,
@@ -221,7 +225,7 @@ class PlantsPageContent extends StatelessWidget {
                                                         ),
                                                       ),
                                                       const SizedBox(
-                                                        height: 5,
+                                                        height: 3,
                                                       ),
                                                       const Text(
                                                         'days to watering',
@@ -229,18 +233,13 @@ class PlantsPageContent extends StatelessWidget {
                                                           fontSize: 11,
                                                         ),
                                                       ),
+                                                      const SizedBox(
+                                                        height: 8,
+                                                      ),
                                                     ],
                                                   ),
                                                 ],
                                               ),
-
-                                              // Text(
-                                              //   plantModel
-                                              //       .relaseDateFormatted(),
-                                              //   style: const TextStyle(
-                                              //     fontSize: 10,
-                                              //   ),
-                                              // ),
                                             ],
                                           ),
                                         ),
