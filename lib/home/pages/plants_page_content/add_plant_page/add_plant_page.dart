@@ -260,7 +260,8 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                       height: 20,
                     ),
                     TextField(
-                      onChanged: widget.onTitleChanged,
+                      onChanged: widget.onTempChanged,
+                      keyboardType: TextInputType.number,
                       textAlign: TextAlign.start,
                       decoration: const InputDecoration(
                         icon: Icon(
@@ -274,7 +275,7 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                       height: 20,
                     ),
                     TextField(
-                      onChanged: widget.onTitleChanged,
+                      onChanged: widget.onSunChanged,
                       textAlign: TextAlign.start,
                       decoration: const InputDecoration(
                         icon: Icon(
@@ -288,7 +289,8 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                       height: 20,
                     ),
                     TextField(
-                      onChanged: widget.onTitleChanged,
+                      onChanged: widget.onWaterChanged,
+                      keyboardType: TextInputType.number,
                       textAlign: TextAlign.start,
                       decoration: const InputDecoration(
                         icon: Icon(
@@ -309,6 +311,16 @@ class _AddPlantPageBodyState extends State<_AddPlantPageBody> {
                           firstDate: DateTime.now(),
                           lastDate: DateTime.now().add(
                             const Duration(days: 365 * 10),
+                          ),
+                          builder: (context, child) => Theme(
+                            data: ThemeData().copyWith(
+                                colorScheme: const ColorScheme.dark(
+                                  primary: Color.fromARGB(255, 113, 169, 122),
+                                  onPrimary: Colors.white,
+                                  surface: Color.fromARGB(255, 113, 169, 122),
+                                ),
+                                dialogBackgroundColor: Colors.black),
+                            child: child!,
                           ),
                         );
                         widget.onDateChanged(selectedDate);
